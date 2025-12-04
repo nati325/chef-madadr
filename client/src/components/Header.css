@@ -1,0 +1,208 @@
+/* ===============================
+      GLOBAL VARIABLES
+   =============================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap');
+
+:root {
+  --nav-height: 70px;
+  --nav-bg: linear-gradient(135deg, #1a0f0a, #2d1810, #1a0f0a);
+  --txt-color: #f5e6d3;
+  --txt-hover: #ff8c42;
+  --txt-active: #ffc947;
+  --font-main: 'Poppins', sans-serif;
+  --font-logo: 'Playfair Display', serif;
+}
+
+/* ===============================
+      RESET + FIX FOR HERO
+   =============================== */
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: var(--font-main);
+}
+
+/* ===============================
+      HEADER
+   =============================== */
+header {
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--nav-bg);
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+
+  box-shadow: 0 4px 20px rgba(29, 15, 10, 0.7);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 140, 66, 0.2);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* הסתרת scrollbar אבל שומר פונקציונליות */
+header::-webkit-scrollbar {
+  height: 0;
+}
+
+header::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+header::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+header h1 {
+  color: var(--txt-color);
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 900;
+  font-family: var(--font-logo);
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #ff8c42, #ffc947, #ffaa33);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(255, 140, 66, 0.4);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+header h1:hover {
+  transform: scale(1.05);
+}
+
+/* ===============================
+      NAVIGATION
+   =============================== */
+header nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+header nav a {
+  color: var(--txt-color);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: var(--font-main);
+  position: relative;
+  padding-bottom: 3px;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+header nav a:hover {
+  color: var(--txt-hover);
+  transform: translateY(-2px);
+}
+
+/* קו תחתון שיופיע בהובר */
+header nav a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2.5px;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, var(--txt-hover), var(--txt-active));
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(255, 140, 66, 0.8), 0 0 20px rgba(255, 140, 66, 0.4);
+  transition: width 0.3s ease-in-out, box-shadow 0.3s ease;
+}
+
+header nav a:hover::after {
+  box-shadow: 0 0 16px rgba(255, 140, 66, 1), 0 0 30px rgba(255, 140, 66, 0.6);
+}
+
+header nav a:hover::after,
+header nav a.active::after {
+  width: 100%;
+}
+
+header nav a.active {
+  font-weight: 700;
+  color: var(--txt-active);
+}
+
+/* ===============================
+      MOBILE (RESPONSIVE)
+   =============================== */
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    min-height: var(--nav-height);
+    padding: 12px 20px;
+    flex-direction: column;
+    gap: 15px;
+    overflow-x: visible;
+    box-shadow: 0 2px 15px rgba(29, 15, 10, 0.9);
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    letter-spacing: 0.3px;
+  }
+
+  header nav {
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 5px 0;
+  }
+
+  header nav a {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(45, 24, 16, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  header nav a:hover,
+  header nav a.active {
+    background: rgba(255, 140, 66, 0.2);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 10px 15px;
+    gap: 12px;
+  }
+
+  header h1 {
+    font-size: 1.1rem;
+  }
+
+  header nav {
+    gap: 10px;
+  }
+
+  header nav a {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+}
