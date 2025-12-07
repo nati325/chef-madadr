@@ -1,0 +1,109 @@
+/* Shared styles for CourseDetails and RecipeDetails pages */
+
+.details-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.details-back-button {
+    background: linear-gradient(135deg, #ffc947, #ff8c42);
+    color: #1a0f0a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.details-back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 201, 71, 0.3);
+}
+
+.details-action-button {
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #ffc947, #ff8c42);
+    color: #1a0f0a;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 201, 71, 0.3);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.details-action-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 201, 71, 0.5);
+}
+
+.details-action-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.details-video-link {
+    display: inline-block;
+    padding: 12px 24px;
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 8px;
+    color: #ff6b6b;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.details-video-link:hover {
+    background: rgba(255, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .details-page-container {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .details-action-button {
+        width: 100%;
+        max-width: 100%;
+        white-space: normal;
+        word-break: break-word;
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+
+    .details-back-button {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .details-video-link {
+        width: 100%;
+        display: block;
+        margin-top: 10px;
+    }
+}

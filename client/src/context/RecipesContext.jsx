@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAllRecipes } from "../api/userRecipesApi.js";
+import { getAllRecipes } from "../apirecipe/userRecipesApi.js";
 
 const RecipesContext = createContext();
 

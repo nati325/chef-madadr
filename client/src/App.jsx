@@ -9,11 +9,10 @@ import Register from "./pages/register";
 import RecipeDetails from "./pages/RecipeDetails";
 import About from "./pages/about";
 import Courses from "./pages/courses";
-import AddRecipe from "./pages/AddRecipe";
-import EditRecipe from "./pages/EditRecipe";
+import CourseDetails from "./pages/CourseDetails";
+
 import CommunityRecipes from "./pages/CommunityRecipes";
 import AdminDashboard from "./pages/AdminDashboard";
-import AdminCoursesManager from "./pages/AdminCoursesManager";
 
 // 👇 ייבוא הקונטקסט
 import { FavoritesProvider } from "./context/FavoritesContext";
@@ -21,30 +20,25 @@ import { CourseProvider } from "./context/CourseContext";
 
 function App() {
   return (
-    // 👇 Here we wrap everything that needs access to favorites and courses
-    <CourseProvider>
-      <FavoritesProvider>
-        <>
-          <Header />
-
+    <FavoritesProvider>
+      <>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/res" element={<RecipesAZ />} />
           <Route path="/recipe/:id" element={<RecipeDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/course/:id" element={<CourseDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/add-recipe" element={<AddRecipe />} />
-          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
+
           <Route path="/community-recipes" element={<CommunityRecipes />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin-courses" element={<AdminCoursesManager />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </>
     </FavoritesProvider>
-    </CourseProvider>
   );
 }
 

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useFavorites } from "../context/FavoritesContext";
-import { getRecipeById } from "../api/userRecipesApi";
+import { getRecipeById } from "../apirecipe/userRecipesApi";
+import "./details.css";
 
 function RecipeDetails() {
   const { id } = useParams(); // מזהה המתכון מה-URL
   const { favorites, toggleFavorite } = useFavorites();
-  
+  const navigate = useNavigate();
+
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,7 +18,7 @@ function RecipeDetails() {
     async function loadRecipe() {
       try {
         setLoading(true);
-        
+
         // Try to load from MongoDB first (user recipes)
         if (id.length === 24) { // MongoDB ID length
           try {
@@ -29,13 +31,13 @@ function RecipeDetails() {
             console.log('Not a user recipe, trying TheMealDB...');
           }
         }
-        
+
         // If not found in MongoDB, try TheMealDB
         const res = await fetch(
           `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
         );
         const data = await res.json();
-        
+
         if (data.meals && data.meals.length > 0) {
           setRecipe(data.meals[0]);
           setIsUserRecipe(false);
@@ -67,13 +69,16 @@ function RecipeDetails() {
     return (
       <div style={styles.container}>
         <p style={styles.error}>{error || "מתכון לא נמצא"}</p>
+        <button onClick={() => navigate(-1)} style={styles.backBtn}>
+          חזור
+        </button>
       </div>
     );
   }
 
   // חילוץ מרכיבים (ingredients)
   const ingredients = [];
-  
+
   if (isUserRecipe) {
     // MongoDB recipe - ingredients is an array of {name, amount}
     if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
@@ -100,11 +105,17 @@ function RecipeDetails() {
   const recipeCategory = isUserRecipe ? recipe.categories?.join(', ') : recipe.strCategory;
   const recipeDifficulty = isUserRecipe ? recipe.difficulty : null;
   const recipeTime = isUserRecipe ? recipe.readyInMinutes : null;
+  const recipeArea = isUserRecipe ? 'User Recipe' : recipe.strArea;
+  const recipeVideo = isUserRecipe ? null : recipe.strYoutube;
 
-  const isFavorite = favorites.includes(recipeId);
+  const isFavorite = favorites.some((fav) => fav.idMeal === recipeId || fav._id === recipeId);
 
   return (
     <div style={styles.page}>
+      <button onClick={() => navigate(-1)} style={styles.backBtnTop}>
+        ← חזור
+      </button>
+
       {/* תמונת המתכון */}
       <div style={styles.imageWrapper}>
         <img
@@ -112,13 +123,19 @@ function RecipeDetails() {
           alt={recipeTitle}
           style={styles.image}
         />
-        
+
         {/* כפתור לב */}
         <button
-          onClick={() => toggleFavorite(recipeId)}
-          style={styles.favoriteBtn}
+          style={{
+            ...styles.favoriteBtn,
+            background: isFavorite ? "rgba(255, 201, 71, 0.9)" : "rgba(45, 24, 16, 0.9)",
+            borderColor: isFavorite ? "#ffc947" : "rgba(255, 140, 66, 0.6)",
+            transform: isFavorite ? "scale(1.1)" : "scale(1)",
+          }}
+          onClick={() => toggleFavorite(recipe)}
+          title={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
         >
-          {isFavorite ? "❤️" : "🤍"}
+          {isFavorite ? "★" : "☆"}
         </button>
       </div>
 
@@ -131,8 +148,8 @@ function RecipeDetails() {
           {recipeCategory && (
             <span style={styles.badge}>📂 {recipeCategory}</span>
           )}
-          {!isUserRecipe && recipe.strArea && (
-            <span style={styles.badge}>🌍 {recipe.strArea}</span>
+          {recipeArea && (
+            <span style={styles.badge}>🌍 {recipeArea}</span>
           )}
           {recipeDifficulty && (
             <span style={styles.badge}>⭐ {recipeDifficulty}</span>
@@ -146,15 +163,15 @@ function RecipeDetails() {
         </div>
 
         {/* מרכיבים + הוראות הכנה בשורה אחת */}
-        <div style={{ display: "flex", gap: "20px", marginBottom: "40px", flexWrap: "wrap" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "30px" }}>
           {/* מרכיבים */}
-          <div style={{ ...styles.section, flex: "1", minWidth: "300px" }}>
+          <div style={styles.section}>
             <h2 style={styles.sectionTitle}>🥘 מרכיבים</h2>
             <ul style={styles.ingredientsList}>
               {ingredients.length > 0 ? (
                 ingredients.map((ing, idx) => (
                   <li key={idx} style={styles.ingredient}>
-                    {ing}
+                    • {ing}
                   </li>
                 ))
               ) : (
@@ -164,34 +181,27 @@ function RecipeDetails() {
           </div>
 
           {/* הוראות הכנה */}
-          <div style={{ ...styles.section, flex: "1", minWidth: "300px" }}>
+          <div style={styles.section}>
             <h2 style={styles.sectionTitle}>👨‍🍳 הוראות הכנה</h2>
-            {isUserRecipe && recipeInstructions && Array.isArray(recipeInstructions) ? (
-              <ol style={styles.instructionsList}>
-                {recipeInstructions.map((instruction, idx) => (
-                  <li key={idx} style={styles.instructionItem}>{instruction}</li>
-                ))}
-              </ol>
-            ) : (
-              <p style={styles.instructions}>{recipeInstructions || 'אין הוראות הכנה'}</p>
+            <div style={styles.instructions}>
+              {recipeInstructions || 'אין הוראות הכנה'}
+            </div>
+
+            {/* וידאו (אם קיים) */}
+            {recipeVideo && (
+              <div style={{ marginTop: "20px", textAlign: "center" }}>
+                <a
+                  href={recipeVideo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="details-video-link"
+                >
+                  🎥 צפה בסרטון הכנה
+                </a>
+              </div>
             )}
           </div>
         </div>
-
-        {/* וידאו (אם קיים) */}
-        {!isUserRecipe && recipe.strYoutube && (
-          <div style={{ ...styles.section, textAlign: "center", maxWidth: "400px", margin: "40px auto 0" }}>
-            <h2 style={styles.sectionTitle}>🎥 סרטון הכנה</h2>
-            <a
-              href={recipe.strYoutube}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={styles.videoLink}
-            >
-              צפה ב-YouTube ↗
-            </a>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -355,16 +365,5 @@ const styles = {
     lineHeight: "1.6",
     marginBottom: "10px",
     color: "#f5e6d3",
-  },
-  videoLink: {
-    display: "inline-block",
-    padding: "12px 24px",
-    background: "rgba(255, 0, 0, 0.2)",
-    border: "1px solid rgba(255, 0, 0, 0.5)",
-    borderRadius: "8px",
-    color: "#ff6b6b",
-    textDecoration: "none",
-    fontSize: "16px",
-    transition: "all 0.3s ease",
   },
 };

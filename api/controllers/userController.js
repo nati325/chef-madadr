@@ -2,6 +2,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
+import Course from "../models/courseModel.js";
 
 // POST /api/users/register
 export const register = async (req, res) => {
@@ -92,52 +93,40 @@ export const getProfile = async (req, res) => {
 };
 export const addCourseToUser = async (req, res) => {
   try {
-    console.log("🔵 addCourseToUser started");
-    console.log("🔵 req.params.courseId:", req.params.courseId);
-    console.log("🔵 req.user:", req.user);
-    
-    const courseId = parseInt(req.params.courseId, 10);
-    console.log("🔵 Parsed courseId:", courseId);
-    
-    if (isNaN(courseId)) {
-      console.log("🔴 Invalid course ID");
+    const courseId = req.params.courseId;
+    if (!courseId) {
       return res.status(400).json({ message: "Invalid course ID" });
     }
-
-    console.log("🔵 Finding user:", req.user.id);
     const user = await User.findById(req.user.id);
-    console.log("🔵 User found:", !!user);
-    
     if (!user) {
-      console.log("🔴 User not found");
       return res.status(404).json({ message: "User not found" });
     }
-
-    console.log("🔵 Current user.courses:", user.courses);
-    
-    // Check if course already exists (by courseId)
-    const existingCourse = user.courses.find(c => c.courseId === courseId);
-    console.log("🔵 Existing course:", existingCourse);
-    
-    if (!existingCourse) {
-      console.log("🔵 Adding new course");
-      // Add new course with status "pending"
-      user.courses.push({
-        courseId: courseId,
-        status: "pending",
-        purchaseDate: new Date()
-      });
-      console.log("🔵 Saving user...");
-      await user.save();
-      console.log("🟢 User saved successfully");
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
     }
-
-    res.json({
-      courses: user.courses,
-    });
+    // Check if user already registered in course
+    const alreadyRegistered = course.participants.some(
+      (p) => p.toString() === user._id.toString()
+    );
+    if (alreadyRegistered) {
+      return res.status(400).json({ message: "Already registered to course" });
+    }
+    // Check if course is full
+    if (course.participants.length >= course.maxSeats) {
+      return res.status(400).json({ message: "Course is full" });
+    }
+    // Add user to course participants
+    course.participants.push(user._id);
+    await course.save();
+    // Add course to user.courses
+    const existingCourse = user.courses.find(c => String(c.courseId || c._id) === String(courseId));
+    if (!existingCourse) {
+      user.courses.push({ courseId });
+    }
+    await user.save();
+    res.json({ courses: user.courses });
   } catch (err) {
-    console.error("🔴 addCourseToUser error:", err);
-    console.error("🔴 Error stack:", err.stack);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -162,33 +151,45 @@ export const getUserCourses = async (req, res) => {
 // DELETE /api/users/courses/:courseId - removes a course
 export const removeCourseFromUser = async (req, res) => {
   try {
-    console.log("🔴 removeCourseFromUser called");
-    const courseId = parseInt(req.params.courseId, 10);
-    console.log("🔴 Course ID to remove:", courseId);
-    
-    if (isNaN(courseId)) {
+    const courseId = req.params.courseId;
+    if (!courseId) {
       return res.status(400).json({ message: "Invalid course ID" });
     }
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+    // Remove user from course participants
+    course.participants = course.participants.filter(
+      (p) => p.toString() !== user._id.toString()
+    );
+    await course.save();
+    // Remove course from user.courses
+    user.courses = user.courses.filter(c => String(c.courseId || c._id) !== String(courseId));
+    await user.save();
+    res.json({ courses: user.courses, message: "Course removed successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
+// GET /api/users/favorites - returns user's favorite meals
+export const getFavorites = async (req, res) => {
+  try {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log("🔴 User courses before:", user.courses);
-    
-    // Filter - remove the course from the array
-    user.courses = user.courses.filter(c => c.courseId !== courseId);
-    console.log("🔴 User courses after:", user.courses);
-    
-    await user.save();
-
     res.json({
-      courses: user.courses,
-      message: "Course removed successfully"
+      favoriteMeals: user.favoriteMeals || [],
     });
   } catch (err) {
-    console.error("removeCourseFromUser error:", err);
+    console.error("getFavorites error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

@@ -7,7 +7,7 @@ import {
   updateRecipe,
   deleteRecipe,
   getMyRecipes,
-} from "../controllers/recipeControler.js";
+} from "../controllers/recipeController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
 

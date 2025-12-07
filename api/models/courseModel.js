@@ -20,6 +20,8 @@ const courseSchema = new mongoose.Schema(
       },
     ], // Users registered for the course
 
+    // 🔥 תמונה של הקורס
+    image: { type: String },
     // 🔥 Who created the course (the admin)
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

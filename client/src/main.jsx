@@ -6,17 +6,20 @@ import { FavoritesProvider } from "./context/FavoritesContext.jsx";
 import { RecipesProvider } from "./context/RecipesContext.jsx";
 import "./index.css";
 import App from "./App.jsx";
+import { CourseProvider } from "./context/CourseContext.jsx";
 
 console.log("Spoonacular Key:", import.meta.env.VITE_SPOONACULAR_KEY);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <FavoritesProvider>
-        <RecipesProvider>
-          <App />
-        </RecipesProvider>
-      </FavoritesProvider>
+      <CourseProvider>
+        <FavoritesProvider>
+          <RecipesProvider>
+            <App />
+          </RecipesProvider>
+        </FavoritesProvider>
+      </CourseProvider>
     </BrowserRouter>
   </StrictMode>
 );

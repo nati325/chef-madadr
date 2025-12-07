@@ -1,18 +1,16 @@
 // server/controllers/courseController.js
 
 import Course from "../models/courseModel.js";
+import User from "../models/userModel.js";
 
 // --- Create new course (admin only) ---
 export const createCourse = async (req, res) => {
   try {
-    // Only admin can create a course
     if (!req.user || !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: "Only admin can create a course" });
+      return res.status(403).json({ message: "Only admin can create a course" });
     }
 
-    const userId = req.user._id; // Who created it (the admin)
+    const userId = req.user._id;
     const course = new Course({ ...req.body, createdBy: userId });
     await course.save();
     res.status(201).json({ message: "Course created", course });
@@ -54,30 +52,88 @@ export const registerToCourse = async (req, res) => {
     const courseId = req.params.id;
 
     const course = await Course.findById(courseId);
-
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
 
-    // If user already registered – don't allow again
     const alreadyRegistered = course.participants.some(
-      (p) => p.toString() === userId.toString()
+      (p) => String(p) === String(userId)
     );
     if (alreadyRegistered) {
-      return res
-        .status(400)
-        .json({ message: "You are already registered to this course" });
+      // Instead of error, return current courses
+      const user = await User.findById(userId).select("courses").lean();
+      return res.json({
+        message: "You are already registered to this course",
+        alreadyRegistered: true,
+        userCourses: user?.courses || [],
+      });
     }
 
-    // If course is full
-    if (course.participants.length >= course.maxSeats) {
+    if (course.maxSeats && course.participants.length >= course.maxSeats) {
       return res.status(400).json({ message: "Course is full" });
     }
 
+    // Add user to course participants
     course.participants.push(userId);
     await course.save();
 
-    res.json({ message: "Registered successfully", course });
+    // Add course to user.courses array if not exists
+    const user = await User.findById(userId);
+    if (user) {
+      const existingCourse = user.courses.find(c => String(c.courseId) === String(courseId));
+      if (!existingCourse) {
+        user.courses.push({
+          courseId: course._id,
+          status: "pending",
+          purchaseDate: new Date()
+        });
+        await user.save();
+      }
+    }
+
+    // Return the updated user's courses (so client can replace state)
+    const updatedUser = await User.findById(userId).select("courses").lean();
+    res.json({
+      message: "Registered successfully",
+      course,
+      userCourses: updatedUser?.courses || [],
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// --- Unregister from course ---
+export const unregisterFromCourse = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const courseId = req.params.id;
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Remove user from course participants
+    course.participants = course.participants.filter(
+      (p) => String(p) !== String(userId)
+    );
+    await course.save();
+
+    // Remove course from user.courses
+    const user = await User.findById(userId);
+    if (user) {
+      user.courses = user.courses.filter(
+        (c) => String(c.courseId) !== String(courseId)
+      );
+      await user.save();
+    }
+
+    const updatedUser = await User.findById(userId).select("courses").lean();
+    res.json({
+      message: "Unregistered successfully",
+      userCourses: updatedUser?.courses || [],
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -86,11 +142,8 @@ export const registerToCourse = async (req, res) => {
 // --- Update course (admin only) ---
 export const updateCourse = async (req, res) => {
   try {
-    // Admin only
     if (!req.user || !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: "Only admin can update a course" });
+      return res.status(403).json({ message: "Only admin can update a course" });
     }
 
     const course = await Course.findById(req.params.id);
@@ -107,14 +160,11 @@ export const updateCourse = async (req, res) => {
   }
 };
 
-// --- מחיקת קורס (רק אדמין) ---
+// --- Delete course (admin only) ---
 export const deleteCourse = async (req, res) => {
   try {
-    // רק אדמין
     if (!req.user || !req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ message: "Only admin can delete a course" });
+      return res.status(403).json({ message: "Only admin can delete a course" });
     }
 
     const course = await Course.findById(req.params.id);
@@ -122,7 +172,14 @@ export const deleteCourse = async (req, res) => {
       return res.status(404).json({ message: "Course not found" });
     }
 
+    // Delete the course
     await course.deleteOne();
+
+    // Remove this course from all users' courses arrays
+    await User.updateMany(
+      { "courses.courseId": course._id },
+      { $pull: { courses: { courseId: course._id } } }
+    );
 
     res.json({ message: "Course deleted successfully" });
   } catch (err) {

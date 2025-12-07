@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteRecipe } from '../api/userRecipesApi';
+import { deleteRecipe } from '../apirecipe/userRecipesApi';
 import { useRecipes } from '../context/RecipesContext.jsx';
 import RecipeCard from '../components/RecipeCard';
 import './CommunityRecipes.css';
@@ -47,16 +47,12 @@ export default function CommunityRecipes() {
     }
   };
 
-  const handleEdit = (recipeId) => {
-    navigate(`/edit-recipe/${recipeId}`);
-  };
-
   const isOwnerOrAdmin = (recipe) => {
     if (!currentUser) return false;
-    
+
     // Check if admin
     if (currentUser.isAdmin) return true;
-    
+
     // Check if owner
     const recipeUserId = recipe.userId?._id || recipe.userId;
     return recipeUserId === currentUser._id || recipeUserId === currentUser.id;
@@ -75,25 +71,13 @@ export default function CommunityRecipes() {
       <div className="community-container">
         <div className="header-section">
           <h1 className="page-title">Community Recipes</h1>
-          <button 
-            className="add-recipe-btn"
-            onClick={() => navigate('/add-recipe')}
-          >
-            + Add Recipe
-          </button>
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
         {recipes.length === 0 ? (
           <div className="empty-state">
-            <p>No recipes yet. Be the first to add one!</p>
-            <button 
-              className="add-recipe-btn"
-              onClick={() => navigate('/add-recipe')}
-            >
-              + Add Recipe
-            </button>
+            <p>No recipes yet.</p>
           </div>
         ) : (
           <div className="recipes-grid">
@@ -101,18 +85,9 @@ export default function CommunityRecipes() {
               return (
                 <div key={recipe._id} className="recipe-card-wrapper">
                   <RecipeCard recipe={recipe} />
-                  
+
                   {isOwnerOrAdmin(recipe) && (
                     <div className="recipe-actions">
-                      <button
-                        className="edit-btn"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleEdit(recipe._id);
-                        }}
-                      >
-                        ✏️ Edit
-                      </button>
                       <button
                         className="delete-btn"
                         onClick={(e) => {

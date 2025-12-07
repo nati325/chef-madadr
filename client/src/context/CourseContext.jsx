@@ -1,120 +1,83 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { registerToCourse, unregisterFromCourse } from "../apirecipe/courseApi";
+import { getMyCoursesApi } from "../apirecipe/userApi";
 
 const CourseContext = createContext();
 
 export function CourseProvider({ children }) {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([]); // user's purchased courses
   const [loading, setLoading] = useState(true);
 
-  // Load purchased courses on initial load
-  useEffect(() => {
-    async function loadCourses() {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setLoading(false);
-          return;
-        }
-
-        const response = await fetch("http://localhost:5000/api/users/courses", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch courses");
-        }
-
-        const data = await response.json();
-        setCourses(data.courses || []);
-      } catch (error) {
-        console.error("Error loading courses:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadCourses();
-  }, []);
-
-  // Function to add a purchased course
-  const addCourse = async (courseId) => {
+  // Load purchased courses on initial load and expose reload function
+  const loadCourses = async () => {
     try {
-      console.log("🔵 Adding course:", courseId);
+      setLoading(true);
       const token = localStorage.getItem("token");
-      console.log("🔵 Token exists:", !!token);
-      
       if (!token) {
-        console.error("🔴 No token found - user not logged in");
+        setCourses([]);
+        setLoading(false);
         return;
       }
-
-      console.log("🔵 Sending request to:", `http://localhost:5000/api/users/courses/${courseId}`);
-      const response = await fetch(`http://localhost:5000/api/users/courses/${courseId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("🔵 Response status:", response.status);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("🔴 Error response:", errorText);
-        throw new Error("Failed to add course");
-      }
-
-      const data = await response.json();
-      console.log("🟢 Course added successfully:", data);
-      setCourses(data.courses);
-      return true;
+      const data = await getMyCoursesApi(token);
+      // server could return { courses: [...] } or { userCourses: [...] } — handle both
+      const arr = data.courses || data.userCourses || [];
+      // normalize: ensure each item has courseId string (older code expects that)
+      setCourses(arr.map(c => (c.courseId ? { ...c, courseId: String(c.courseId) } : { ...c, courseId: String(c._id || c.courseId || c.id) })));
     } catch (error) {
-      console.error("🔴 Error adding course:", error);
-      return false;
+      console.error("Error loading courses:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Function to remove a course
-  const removeCourse = async (courseId) => {
-    try {
-      console.log("🔵 Removing course:", courseId);
-      const token = localStorage.getItem("token");
-      
-      if (!token) {
-        console.error("🔴 No token found - user not logged in");
-        return;
-      }
+  useEffect(() => {
+    loadCourses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      console.log("🔵 Sending DELETE request to:", `http://localhost:5000/api/users/courses/${courseId}`);
-      const response = await fetch(`http://localhost:5000/api/users/courses/${courseId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // Function to add a purchased course (register)
+  const addCourse = async (courseId) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found");
 
-      console.log("🔵 Response status:", response.status);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("🔴 Error response:", errorText);
-        throw new Error("Failed to remove course");
-      }
+    console.log("🔵 Registering to course:", courseId);
 
-      const data = await response.json();
-      console.log("🟢 Course removed successfully:", data);
-      setCourses(data.courses);
-      return true;
-    } catch (error) {
-      console.error("🔴 Error removing course:", error);
-      return false;
+    // call API (courseApi.registerToCourse returns parsed JSON or throws)
+    const result = await registerToCourse(courseId, token);
+
+    console.log("🔵 Server response:", result);
+    console.log("🔵 userCourses from server:", result.userCourses);
+
+    // Prefer userCourses field (returned by server). If missing, reload.
+    if (result.userCourses) {
+      const normalizedCourses = result.userCourses.map(c => (c.courseId ? { ...c, courseId: String(c.courseId) } : { ...c, courseId: String(c._id || c.courseId || c.id) }));
+      console.log("🔵 Setting courses to:", normalizedCourses);
+      setCourses(normalizedCourses);
+    } else {
+      // fallback: reload from server
+      console.log("🔵 No userCourses in response, reloading...");
+      await loadCourses();
     }
+    return true;
+  };
+
+  // Function to remove a course (unregister)
+  const removeCourse = async (courseId) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found");
+
+    const result = await unregisterFromCourse(courseId, token);
+
+    if (result.userCourses) {
+      setCourses(result.userCourses.map(c => (c.courseId ? { ...c, courseId: String(c.courseId) } : { ...c, courseId: String(c._id || c.courseId || c.id) })));
+    } else {
+      await loadCourses();
+    }
+    return true;
   };
 
   return (
-    <CourseContext.Provider value={{ courses, loading, addCourse, removeCourse }}>
+    <CourseContext.Provider value={{ courses, loading, addCourse, removeCourse, reloadCourses: loadCourses }}>
       {children}
     </CourseContext.Provider>
   );

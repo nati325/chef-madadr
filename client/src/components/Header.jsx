@@ -21,15 +21,15 @@ const Header = () => {
 
   return (
     <header>
-     <NavLink to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>
-  <h1>the crazy recipe of chef madar</h1>
-</NavLink>
+      <NavLink to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <h1>the crazy recipe of chef madar</h1>
+      </NavLink>
       <nav>
         <NavLink to="/">home</NavLink>
         <NavLink to="/profile">profile</NavLink>
         <NavLink to="/courses">courses</NavLink>
         <NavLink to="/community-recipes">community recipes</NavLink>
-        {isAdmin && <NavLink to="/admin-dashboard">📊 Admin</NavLink>}
+        {isAdmin && <NavLink to="/admin">📊 Admin</NavLink>}
         <NavLink to="/login">log in</NavLink>
         <NavLink to="/res">Res</NavLink>
         <NavLink to="/register">register</NavLink>

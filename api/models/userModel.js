@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     // קורסים שנרכשו
     courses: [
       {
-        courseId: { type: Number, required: true },
+        courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true },
         status: { type: String, default: "pending" },
         purchaseDate: { type: Date, default: Date.now }
       }

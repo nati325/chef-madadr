@@ -5,6 +5,7 @@ import {
   getCourses,
   getCourseById,
   registerToCourse,
+  unregisterFromCourse,
   updateCourse,
   deleteCourse,
 } from "../controllers/courseController.js";
@@ -20,7 +21,8 @@ router.post("/", protect, createCourse);
 router.put("/:id", protect, updateCourse);
 router.delete("/:id", protect, deleteCourse);
 
-// Any logged-in user can register
+// Any logged-in user can register/unregister
 router.post("/:id/register", protect, registerToCourse);
+router.post("/:id/unregister", protect, unregisterFromCourse);
 
 export default router;
