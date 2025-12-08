@@ -48,31 +48,31 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <h1>📊 Admin Dashboard</h1>
-      
+
       <div className="admin-tabs">
-        <button 
+        <button
           className={activeTab === "overview" ? "active" : ""}
           onClick={() => setActiveTab("overview")}
         >
           Overview
         </button>
-        <button 
+        <button
           className={activeTab === "users" ? "active" : ""}
           onClick={() => setActiveTab("users")}
         >
           Users
         </button>
-        <button 
+        <button
           className={activeTab === "popular" ? "active" : ""}
           onClick={() => setActiveTab("popular")}
         >
           Popular Content
         </button>
-        <button 
+        <button
           className={activeTab === "courses" ? "active" : ""}
           onClick={() => setActiveTab("courses")}
         >
-          ניהול קורסים
+          Manage Courses
         </button>
       </div>
       {activeTab === "courses" && (
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
             </thead>
             <tbody>
               <tr>
-                <td>בדיקה</td>
+                <td>Test</td>
                 <td>test@email.com</td>
                 <td>5</td>
                 <td>2</td>
@@ -166,14 +166,14 @@ const AdminDashboard = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Recipe ID</th>
+                  <th>Recipe Title</th>
                   <th>Favorites</th>
                 </tr>
               </thead>
               <tbody>
                 {stats.mostFavoritedApiMeals?.map((meal) => (
                   <tr key={meal.mealId}>
-                    <td>Meal #{meal.mealId}</td>
+                    <td>{meal.title}</td>
                     <td>❤️ {meal.favoritesCount}</td>
                   </tr>
                 ))}

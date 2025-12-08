@@ -197,9 +197,12 @@ export const getFavorites = async (req, res) => {
 // PATCH /api/users/favorites  (toggle favoriteMeal by idMeal)
 export const toggleFavoriteMeal = async (req, res) => {
   try {
-    const { idMeal } = req.body;
+    // Try to get ID from params (preferred) or body
+    console.log("toggleFavoriteMeal request:", { params: req.params, body: req.body });
+    const idMeal = req.params.mealId || req.body.idMeal;
 
     if (!idMeal) {
+      console.log("toggleFavoriteMeal failed: Missing idMeal");
       return res.status(400).json({ message: "idMeal is required" });
     }
 

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCourses } from "../context/CourseContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 function Register() {
   const [name, setName] = useState("");
@@ -8,6 +10,8 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { reloadCourses } = useCourses();
+  const { reloadFavorites } = useFavorites();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +35,7 @@ function Register() {
 
       // Save token like in login
       localStorage.setItem("token", data.token);
-      
+
       // Save complete user object for later use
       if (data._id || data.id) {
         localStorage.setItem("user", JSON.stringify({
@@ -42,12 +46,14 @@ function Register() {
           isAdmin: data.isAdmin || false
         }));
       }
-      
+
       if (data.name) {
         localStorage.setItem("userName", data.name);
       }
 
       // After successful registration → go to profile
+      await reloadCourses();
+      await reloadFavorites();
       navigate("/profile");
     } catch (err) {
       setError(err.message);

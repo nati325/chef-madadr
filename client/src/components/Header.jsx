@@ -31,7 +31,7 @@ const Header = () => {
         <NavLink to="/community-recipes">community recipes</NavLink>
         {isAdmin && <NavLink to="/admin">📊 Admin</NavLink>}
         <NavLink to="/login">log in</NavLink>
-        <NavLink to="/res">Res</NavLink>
+        <NavLink to="/res">Research</NavLink>
         <NavLink to="/register">register</NavLink>
         <NavLink to="/about">about</NavLink>
       </nav>

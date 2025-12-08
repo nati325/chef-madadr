@@ -8,24 +8,25 @@ export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadFavorites() {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setLoading(false);
-          return;
-        }
-
-        const data = await getMyFavoritesApi(token);
-        setFavorites(data.favoriteMeals || []);
-      } catch (err) {
-        console.error("Failed to load favorites", err);
-      } finally {
+  const loadFavorites = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setFavorites([]);
         setLoading(false);
+        return;
       }
-    }
 
+      const data = await getMyFavoritesApi(token);
+      setFavorites(data.favoriteMeals || []);
+    } catch (err) {
+      console.error("Failed to load favorites", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadFavorites();
   }, []);
 
@@ -54,7 +55,7 @@ export function FavoritesProvider({ children }) {
   };
 
   return (
-    <FavoritesContext.Provider value={{ favorites, toggleFavorite, loading }}>
+    <FavoritesContext.Provider value={{ favorites, toggleFavorite, loading, reloadFavorites: loadFavorites }}>
       {children}
     </FavoritesContext.Provider>
   );

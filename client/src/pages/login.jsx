@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCourses } from "../context/CourseContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -7,6 +9,8 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { reloadCourses } = useCourses();
+  const { reloadFavorites } = useFavorites();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -47,8 +51,12 @@ function Login() {
         localStorage.setItem("userName", data.name);
       }
 
+      // Reload courses context to ensure fresh data for the new user
+      await reloadCourses();
+      await reloadFavorites();
+
       // Navigate to profile page
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       setError(err.message);
     } finally {

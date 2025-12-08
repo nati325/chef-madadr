@@ -89,6 +89,15 @@ export default function CommunityRecipes() {
                   {isOwnerOrAdmin(recipe) && (
                     <div className="recipe-actions">
                       <button
+                        className="edit-btn"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/edit-recipe/${recipe._id}`);
+                        }}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
                         className="delete-btn"
                         onClick={(e) => {
                           e.preventDefault();

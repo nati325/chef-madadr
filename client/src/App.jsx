@@ -12,6 +12,7 @@ import Courses from "./pages/courses";
 import CourseDetails from "./pages/CourseDetails";
 
 import CommunityRecipes from "./pages/CommunityRecipes";
+import EditRecipe from "./pages/EditRecipe";
 import AdminDashboard from "./pages/AdminDashboard";
 
 // 👇 ייבוא הקונטקסט
@@ -35,6 +36,7 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           <Route path="/community-recipes" element={<CommunityRecipes />} />
+          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </>

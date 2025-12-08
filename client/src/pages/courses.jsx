@@ -19,7 +19,7 @@ function Courses() {
         setLoading(false);
       })
       .catch(err => {
-        setError("שגיאה בטעינת הקורסים");
+        setError("Error loading courses");
         setLoading(false);
       });
   }, []);
@@ -40,15 +40,15 @@ function Courses() {
         fontWeight: "900",
         fontFamily: "'Playfair Display', serif"
       }}>
-        🍳 הקורסים שלנו
+        🍳 Our Courses
       </h1>
       <div className="courses-list">
         {loading ? (
-          <div style={{ textAlign: "center", padding: "2rem", fontSize: "1.3rem" }}>טוען קורסים...</div>
+          <div style={{ textAlign: "center", padding: "2rem", fontSize: "1.3rem" }}>Loading courses...</div>
         ) : error ? (
           <div style={{ color: "red", textAlign: "center", padding: "2rem", fontSize: "1.2rem" }}>{error}</div>
         ) : courses.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "2rem", fontSize: "1.2rem" }}>לא נמצאו קורסים להצגה</div>
+          <div style={{ textAlign: "center", padding: "2rem", fontSize: "1.2rem" }}>No courses found</div>
         ) : (
           courses.map(course => {
             const isRegistered = registeredCourses.some(rc => {
@@ -105,34 +105,34 @@ function Courses() {
                     }}>{course.description}</p>
 
                     {/* Course Details */}
-                    <div style={{ marginBottom: "1rem", fontSize: "0.9rem", color: "#555", flexShrink: 0 }}>
+                    <div className="course-details">
                       {course.location && (
-                        <div style={{ marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div className="course-detail-row">
                           <span>📍</span>
-                          <span><strong>מיקום:</strong> {course.location}</span>
+                          <span><strong>Location:</strong> {course.location}</span>
                         </div>
                       )}
                       {course.date && (
-                        <div style={{ marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div className="course-detail-row">
                           <span>📅</span>
-                          <span><strong>תאריך:</strong> {new Date(course.date).toLocaleDateString('he-IL')}</span>
+                          <span><strong>Date:</strong> {new Date(course.date).toLocaleDateString('en-IL')}</span>
                         </div>
                       )}
                       {course.price && (
-                        <div style={{ marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div className="course-detail-row">
                           <span>💰</span>
-                          <span><strong>מחיר:</strong> {course.price}</span>
+                          <span><strong>Price:</strong> {course.price}</span>
                         </div>
                       )}
-                      <div style={{ marginBottom: "0.3rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <div className="course-detail-row">
                         <span>👥</span>
-                        <span><strong>נרשמו:</strong> {course.participants?.length || 0} / {course.maxSeats || 20}</span>
+                        <span><strong>Registered:</strong> {course.participants?.length || 0} / {course.maxSeats || 20}</span>
                       </div>
                     </div>
                     <button
                       style={{
                         width: "100%",
-                        padding: "0.9rem 0",
+                        padding: "0.7rem 0",
                         background: isRegistered
                           ? "linear-gradient(135deg, #4caf50, #81c784)"
                           : "linear-gradient(135deg, #ffc947, #ff8c42)",
@@ -140,7 +140,7 @@ function Courses() {
                         border: "none",
                         borderRadius: "12px",
                         fontWeight: "700",
-                        fontSize: "1.1rem",
+                        fontSize: "1rem",
                         cursor: actionLoading === course._id ? "not-allowed" : "pointer",
                         boxShadow: isRegistered
                           ? "0 2px 8px rgba(76,175,80,0.10)"
@@ -157,25 +157,25 @@ function Courses() {
                           if (e.message) {
                             alert(e.message);
                           } else {
-                            alert('שגיאה בהרשמה לקורס');
+                            alert('Error registering for course');
                           }
                         }
                         setActionLoading("");
                       }}
                       disabled={actionLoading === course._id || isRegistered}
-                    >{isRegistered ? "נרשמת ✅" : "להרשמה לקורס"}</button>
+                    >{isRegistered ? "Registered ✅" : "Register for Course"}</button>
                     {isRegistered && (
                       <>
                         <button
                           style={{
                             width: "100%",
-                            padding: "0.9rem 0",
+                            padding: "0.7rem 0",
                             background: "linear-gradient(135deg, #ff6b6b, #d32f2f)",
                             color: "#fff",
                             border: "none",
                             borderRadius: "12px",
                             fontWeight: "700",
-                            fontSize: "1.1rem",
+                            fontSize: "1rem",
                             cursor: actionLoading === course._id ? "not-allowed" : "pointer",
                             marginBottom: "0.5rem",
                             boxShadow: "0 2px 8px rgba(211,47,47,0.10)",
@@ -188,14 +188,14 @@ function Courses() {
                               await removeCourse(course._id);
                               loadCourses(); // Reload courses to show updated participant count
                             } catch (e) {
-                              alert('שגיאה בביטול הרשמה');
+                              alert('Error unregistering');
                             }
                             setActionLoading("");
                           }}
                           disabled={actionLoading === course._id}
-                        >בטל הרשמה</button>
+                        >Unregister</button>
                         <a
-                          href="https://www.bitpay.co.il/app/me/A20C168F-A701-741B-B47D-9A8C54510966D8DA"
+                          href={`https://www.bitpay.co.il/app/me/A20C168F-A701-741B-B47D-9A8C54510966D8DA${course.price ? `?amount=${String(course.price).replace(/[^0-9.]/g, '')}` : ''}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
@@ -204,10 +204,10 @@ function Courses() {
                             textAlign: "center",
                             background: "linear-gradient(135deg, #2196f3, #1565c0)",
                             color: "#fff",
-                            padding: "0.7rem 0",
+                            padding: "0.5rem 0",
                             borderRadius: "10px",
                             fontWeight: "700",
-                            fontSize: "1rem",
+                            fontSize: "0.9rem",
                             border: "none",
                             textDecoration: "none",
                             marginBottom: "0.5rem",
@@ -215,7 +215,16 @@ function Courses() {
                             letterSpacing: "0.5px",
                             transition: "all 0.2s"
                           }}
-                        >לתשלום בביט</a>
+                        >Pay with Bit</a>
+                        <div style={{
+                          textAlign: "center",
+                          fontSize: "0.85rem",
+                          color: "#666",
+                          marginTop: "0.5rem",
+                          fontWeight: "600"
+                        }}>
+                          * Cash payment at the course location or via Bit
+                        </div>
                       </>
                     )}
                   </div>
@@ -227,8 +236,8 @@ function Courses() {
       </div>
       {/* Contact Info */}
       <div className="contact-section">
-        <h3 className="contact-title">יש לך שאלות?</h3>
-        <p className="contact-description">פנה לשף מדאר למידע נוסף על הקורסים</p>
+        <h3 className="contact-title">Have Questions?</h3>
+        <p className="contact-description">Contact Chef Madar for more information about the courses</p>
         <div className="contact-buttons">
           <button
             onClick={() => { navigator.clipboard.writeText('netaneldama@gmail.com'); alert('Email copied to clipboard! ✅'); }}

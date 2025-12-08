@@ -29,7 +29,7 @@ export const getAdminStats = async (req, res) => {
     // Get most favorited recipes (by counting how many users added each recipe to favorites)
     // For community recipes (local MongoDB recipes)
     const allUsersWithFavorites = await User.find({}).select("favorites");
-    
+
     const recipeFavoriteMap = {};
     allUsersWithFavorites.forEach(user => {
       user.favorites.forEach(recipeId => {
@@ -40,12 +40,12 @@ export const getAdminStats = async (req, res) => {
         recipeFavoriteMap[id]++;
       });
     });
-    
+
     const topFavoritedRecipeIds = Object.entries(recipeFavoriteMap)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([id, count]) => ({ id, count }));
-    
+
     const mostLikedRecipes = await Promise.all(
       topFavoritedRecipeIds.map(async ({ id, count }) => {
         const recipe = await Recipe.findById(id).select("title createdBy");
@@ -59,7 +59,7 @@ export const getAdminStats = async (req, res) => {
 
     // Get most favorited API meals (from favoriteMeals)
     const allUsersWithApiMeals = await User.find({}).select("favoriteMeals");
-    
+
     const apiMealFavoriteMap = {};
     allUsersWithApiMeals.forEach(user => {
       user.favoriteMeals.forEach(mealId => {
@@ -69,18 +69,36 @@ export const getAdminStats = async (req, res) => {
         apiMealFavoriteMap[mealId]++;
       });
     });
-    
-    const mostFavoritedApiMeals = Object.entries(apiMealFavoriteMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([mealId, count]) => ({
-        mealId,
-        favoritesCount: count
-      }));
+
+    const mostFavoritedApiMeals = await Promise.all(
+      Object.entries(apiMealFavoriteMap)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(async ([mealId, count]) => {
+          try {
+            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
+            const data = await response.json();
+            const title = data.meals ? data.meals[0].strMeal : `Unknown Recipe (${mealId})`;
+            return {
+              mealId,
+              title,
+              favoritesCount: count
+            };
+          } catch (err) {
+            console.error(`Failed to fetch details for meal ${mealId}:`, err);
+            return {
+              mealId,
+              title: `Recipe #${mealId}`,
+              favoritesCount: count
+            };
+          }
+        })
+    );
 
     // Get most enrolled courses
     const allUsers = await User.find({}).select("courses");
-    
+
+    // Count enrollments per course ID
     // Count enrollments per course ID
     const courseEnrollmentMap = {};
     allUsers.forEach(user => {
@@ -89,14 +107,25 @@ export const getAdminStats = async (req, res) => {
         if (!courseEnrollmentMap[courseId]) {
           courseEnrollmentMap[courseId] = {
             courseId: courseId,
-            title: `Course ${courseId}`, // You can map this to actual titles if needed
+            title: "Unknown Course", // Will be updated
             enrolledCount: 0
           };
         }
         courseEnrollmentMap[courseId].enrolledCount++;
       });
     });
-    
+
+    // Fetch course titles
+    const courseIds = Object.keys(courseEnrollmentMap);
+    const courses = await Course.find({ _id: { $in: courseIds } }).select("title");
+
+    courses.forEach(course => {
+      const courseIdStr = course._id.toString();
+      if (courseEnrollmentMap[courseIdStr]) {
+        courseEnrollmentMap[courseIdStr].title = course.title;
+      }
+    });
+
     const mostEnrolledCourses = Object.values(courseEnrollmentMap)
       .sort((a, b) => b.enrolledCount - a.enrolledCount)
       .slice(0, 10);
@@ -124,9 +153,9 @@ export const getAdminStats = async (req, res) => {
     });
   } catch (error) {
     console.error("Error getting admin stats:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Error fetching admin statistics",
-      error: error.message 
+      error: error.message
     });
   }
 };
@@ -148,9 +177,9 @@ export const getAllUsers = async (req, res) => {
     });
   } catch (error) {
     console.error("Error getting all users:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Error fetching users",
-      error: error.message 
+      error: error.message
     });
   }
 };

@@ -8,9 +8,9 @@ function About() {
         {/* Header with Chef Image */}
         <div style={styles.heroSection} className="about-hero">
           <div style={styles.chefImageWrapper} className="about-chef-image-wrapper">
-            <img 
-              src="/madar.jpg" 
-              alt="Chef Netanel Madar" 
+            <img
+              src="/madar.jpg"
+              alt="Chef Netanel Madar"
               style={styles.chefImage}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "rotateY(360deg)";
@@ -23,15 +23,15 @@ function About() {
           <div style={styles.heroText} className="about-hero-text">
             <h1 style={styles.mainTitle} className="about-main-title">🌟 Meet Chef Netanel Madar</h1>
             <p style={styles.heroDescription}>
-              A passionate culinary artist and full-stack developer who transforms code and cuisine into extraordinary experiences. 
+              A passionate culinary artist and full-stack developer who transforms code and cuisine into extraordinary experiences.
               With a deep love for both technology and gastronomy, Chef Madar brings innovation to every dish and every line of code.
             </p>
             <p style={styles.heroDescription}>
-              From mastering traditional recipes to crafting modern web applications, 
+              From mastering traditional recipes to crafting modern web applications,
               his journey is fueled by creativity, precision, and an unwavering commitment to excellence.
             </p>
-            <a 
-              href="https://wa.me/972535378985?text=Hello%20Chef%20Madar%2C%20I%20would%20like%20to%20schedule%20a%20meeting" 
+            <a
+              href="https://wa.me/972535378985?text=Hello%20Chef%20Madar%2C%20I%20would%20like%20to%20schedule%20a%20meeting"
               target="_blank"
               rel="noopener noreferrer"
               style={styles.quoteBadge}
@@ -136,20 +136,21 @@ function About() {
             <div style={styles.contactItem} className="about-contact-item">
               <span style={styles.contactIcon}>📧</span>
               <span style={styles.contactLabel}>Email:</span>
-              <button 
+              <button
                 onClick={() => {
                   navigator.clipboard.writeText('netaneldama@gmail.com');
                   alert('Email copied to clipboard! ✅');
                 }}
                 style={{
-                  ...styles.contactValue, 
+                  ...styles.contactValue,
                   cursor: "pointer",
                   background: "none",
                   border: "none",
                   padding: 0,
                   font: "inherit",
                   color: "inherit",
-                  textDecoration: "underline"
+                  textDecoration: "underline",
+                  textAlign: "left"
                 }}
               >
                 netaneldama@gmail.com
@@ -158,8 +159,8 @@ function About() {
             <div style={styles.contactItem} className="about-contact-item">
               <span style={styles.contactIcon}>📸</span>
               <span style={styles.contactLabel}>Instagram:</span>
-              <a 
-                href="https://www.instagram.com/netanel_madarmusice?igsh=MXU4bW8xMGYwMzZ4Zg==" 
+              <a
+                href="https://www.instagram.com/netanel_madarmusice?igsh=MXU4bW8xMGYwMzZ4Zg=="
                 target="_blank"
                 rel="noopener noreferrer"
                 style={styles.contactValue}
@@ -175,8 +176,8 @@ function About() {
             <div style={styles.contactItem} className="about-contact-item">
               <span style={styles.contactIcon}>🎥</span>
               <span style={styles.contactLabel}>YouTube:</span>
-              <a 
-                href="https://youtube.com/channel/UC2g2s3T5tKN7bCMjockxW0Q?si=irstVhesNG_AncFn" 
+              <a
+                href="https://youtube.com/channel/UC2g2s3T5tKN7bCMjockxW0Q?si=irstVhesNG_AncFn"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={styles.contactValue}
@@ -194,8 +195,8 @@ function About() {
           </div>
         </section>
 
-       
-      
+
+
       </div>
     </div>
   );

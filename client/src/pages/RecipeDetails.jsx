@@ -42,11 +42,11 @@ function RecipeDetails() {
           setRecipe(data.meals[0]);
           setIsUserRecipe(false);
         } else {
-          setError("מתכון לא נמצא");
+          setError("Recipe not found");
         }
       } catch (err) {
         console.error(err);
-        setError("שגיאה בטעינת המתכון");
+        setError("Error loading recipe");
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,7 @@ function RecipeDetails() {
   if (loading) {
     return (
       <div style={styles.container}>
-        <p style={styles.message}>טוען מתכון...</p>
+        <p style={styles.message}>Loading recipe...</p>
       </div>
     );
   }
@@ -68,10 +68,8 @@ function RecipeDetails() {
   if (error || !recipe) {
     return (
       <div style={styles.container}>
-        <p style={styles.error}>{error || "מתכון לא נמצא"}</p>
-        <button onClick={() => navigate(-1)} style={styles.backBtn}>
-          חזור
-        </button>
+        <p style={styles.error}>{error || "Recipe not found"}</p>
+
       </div>
     );
   }
@@ -112,9 +110,7 @@ function RecipeDetails() {
 
   return (
     <div style={styles.page}>
-      <button onClick={() => navigate(-1)} style={styles.backBtnTop}>
-        ← חזור
-      </button>
+
 
       {/* תמונת המתכון */}
       <div style={styles.imageWrapper}>
@@ -133,9 +129,9 @@ function RecipeDetails() {
             transform: isFavorite ? "scale(1.1)" : "scale(1)",
           }}
           onClick={() => toggleFavorite(recipe)}
-          title={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
+          title={isFavorite ? "Remove from favorites" : "Add to favorites"}
         >
-          {isFavorite ? "★" : "☆"}
+          {isFavorite ? "❤️" : "🤍"}
         </button>
       </div>
 
@@ -155,7 +151,7 @@ function RecipeDetails() {
             <span style={styles.badge}>⭐ {recipeDifficulty}</span>
           )}
           {recipeTime && (
-            <span style={styles.badge}>⏱️ {recipeTime} דקות</span>
+            <span style={styles.badge}>⏱️ {recipeTime} minutes</span>
           )}
           {!isUserRecipe && recipe.strTags && (
             <span style={styles.badge}>🏷️ {recipe.strTags}</span>
@@ -166,7 +162,7 @@ function RecipeDetails() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "30px" }}>
           {/* מרכיבים */}
           <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>🥘 מרכיבים</h2>
+            <h2 style={styles.sectionTitle}>🥘 Ingredients</h2>
             <ul style={styles.ingredientsList}>
               {ingredients.length > 0 ? (
                 ingredients.map((ing, idx) => (
@@ -175,16 +171,16 @@ function RecipeDetails() {
                   </li>
                 ))
               ) : (
-                <p style={{ color: '#d4b896' }}>אין מרכיבים</p>
+                <p style={{ color: '#d4b896' }}>No ingredients</p>
               )}
             </ul>
           </div>
 
           {/* הוראות הכנה */}
           <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>👨‍🍳 הוראות הכנה</h2>
+            <h2 style={styles.sectionTitle}>👨‍🍳 Instructions</h2>
             <div style={styles.instructions}>
-              {recipeInstructions || 'אין הוראות הכנה'}
+              {recipeInstructions || 'No instructions'}
             </div>
 
             {/* וידאו (אם קיים) */}
@@ -196,7 +192,7 @@ function RecipeDetails() {
                   rel="noopener noreferrer"
                   className="details-video-link"
                 >
-                  🎥 צפה בסרטון הכנה
+                  🎥 Watch Video
                 </a>
               </div>
             )}
