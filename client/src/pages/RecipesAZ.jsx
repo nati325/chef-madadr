@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import RecipeCard from "../components/RecipeCard";
 import { useFavorites } from "../context/FavoritesContext.jsx";
 import "./RecipesAZ.css";
+import { cache } from "react";
+const cashe = []
 
 const RecipesAZ = () => {
   const { favorites, toggleFavorite } = useFavorites();
   const [meals, setMeals] = useState([]);
   const [filteredMeals, setFilteredMeals] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(cache.length ? false : true);
 
   const [searchTerm, setSearchTerm] = useState("");   // Single search
   const [filterBy, setFilterBy] = useState("name");   // name | category | area
@@ -20,25 +22,39 @@ const RecipesAZ = () => {
       setError("");
       const letters = "abcdefghijklmnopqrstuvwxyz";
       const allMeals = [];
+      if (!cashe.length) {
+        console.log("****");
 
-      try {
-        for (let letter of letters) {
-          const res = await fetch(
-            `https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`
-          );
-          const data = await res.json();
-          if (data.meals) allMeals.push(...data.meals);
+        try {
+          for (let letter of letters) {
+            const res = await fetch(
+              `https://www.themealdb.com/api/json/v1/1/search.php?f=${letter}`
+            );
+            const data = await res.json();
+            if (data.meals) {
+
+              allMeals.push(...data.meals);
+            }
+          }
+          cashe.push(...allMeals)
+          setMeals(allMeals);
+          setFilteredMeals(allMeals);
+        } catch (err) {
+          console.error("Error:", err);
+          setError("Problem loading data from server");
+        } finally {
+          setLoading(false);
         }
-        setMeals(allMeals);
-        setFilteredMeals(allMeals);
-      } catch (err) {
-        console.error("Error:", err);
-        setError("Problem loading data from server");
-      } finally {
+      }
+      else {
+        setMeals(cashe)
         setLoading(false);
       }
-    };
+    }
+
     loadRecipes();
+
+
   }, []);
 
   // 🔍 Filtering – one search + selected field
@@ -245,7 +261,7 @@ const RecipesAZ = () => {
       fontSize: 14,
       color: "#ff8c42",
     },
-    
+
     // Responsive
     "@media (max-width: 768px)": {
       container: {
@@ -300,10 +316,10 @@ const RecipesAZ = () => {
       <div className="status-row">
         <span>
           {loading
-            ? "Loading recipes..."
+            ? <div className="spinner"></div> // Spinner instead of text
             : error
-            ? ""
-            : `Total ${meals.length} recipes, currently showing ${filteredMeals.length}`}
+              ? ""
+              : `Total ${meals.length} recipes, currently showing ${filteredMeals.length}`}
         </span>
       </div>
 
@@ -312,7 +328,23 @@ const RecipesAZ = () => {
         <p className="error-text">{error}</p>
       ) : (
         <div className="recipes-container">
-          {!loading && filteredMeals.length === 0 ? (
+          {loading ? (
+            // SKELETON LOADER GRID
+            Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="skeleton-card">
+                <div className="skeleton-img skeleton-pulse"></div>
+                <div className="skeleton-body">
+                  <div className="skeleton-text title skeleton-pulse"></div>
+                  <div className="skeleton-meta">
+                    <div className="skeleton-text meta-tag skeleton-pulse"></div>
+                    <div className="skeleton-text meta-tag skeleton-pulse"></div>
+                  </div>
+                  <div className="skeleton-text line skeleton-pulse"></div>
+                  <div className="skeleton-text line short skeleton-pulse"></div>
+                </div>
+              </div>
+            ))
+          ) : filteredMeals.length === 0 ? (
             <p className="empty-text">No recipes found matching your search.</p>
           ) : (
             filteredMeals.map((meal) => (

@@ -21,19 +21,29 @@ const Header = () => {
 
   return (
     <header>
-      <NavLink to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>
-        <h1>the crazy recipe of chef madar</h1>
-      </NavLink>
-      <nav>
+      <nav className="nav-left">
         <NavLink to="/">home</NavLink>
         <NavLink to="/profile">profile</NavLink>
         <NavLink to="/courses">courses</NavLink>
-        <NavLink to="/community-recipes">community recipes</NavLink>
+        <NavLink to="/community-recipes">community</NavLink>
         {isAdmin && <NavLink to="/admin">📊 Admin</NavLink>}
-        <NavLink to="/login">log in</NavLink>
         <NavLink to="/res">Research</NavLink>
-        <NavLink to="/register">register</NavLink>
+
         <NavLink to="/about">about</NavLink>
+      </nav>
+
+      <div className="nav-center">
+        <NavLink to="/about" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <h1>
+            <span className="title-long">The Crazy Website of </span>
+            <span className="title-short">Chef Madar</span>
+          </h1>
+        </NavLink>
+      </div>
+
+      <nav className="nav-right">
+        <NavLink to="/login">log in</NavLink>
+        <NavLink to="/register">register</NavLink>
       </nav>
     </header>
   );

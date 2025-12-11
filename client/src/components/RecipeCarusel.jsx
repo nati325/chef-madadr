@@ -14,11 +14,11 @@ function RecipeCarousel({ title, recipes = [] }) {
 
   // Responsive cards per view
   const getCardsPerView = () => {
-    if (windowWidth < 480) return 2;      // Mobile: 2 cards
-    if (windowWidth < 768) return 3;      // Large mobile: 3 cards
-    if (windowWidth < 1024) return 4;     // Tablet: 4 cards
-    if (windowWidth < 1400) return 4;     // Small desktop: 4 cards
-    return 5;                              // Large desktop: 5 cards
+    if (windowWidth < 500) return 2;      // Mobile
+    if (windowWidth < 800) return 3;      // Tablets/Small
+    if (windowWidth < 1100) return 5;     // Small Laptops
+    if (windowWidth < 1450) return 6;     // Laptops
+    return 7;                              // Large Screens
   };
 
   const cardsPerView = getCardsPerView();
@@ -34,8 +34,8 @@ function RecipeCarousel({ title, recipes = [] }) {
 
   // Dynamic title size based on screen width
   const getTitleSize = () => {
-    if (windowWidth >= 769) return { fontSize: "32px", marginBottom: "12px" };
-    return { fontSize: "18px", marginBottom: "4px" };
+    if (windowWidth >= 769) return { fontSize: "32px", marginBottom: "4px" };
+    return { fontSize: "18px", marginBottom: "2px" };
   };
 
   const titleSize = getTitleSize();
@@ -76,7 +76,7 @@ function RecipeCarousel({ title, recipes = [] }) {
           fontSize: titleSize.fontSize,
           marginBottom: titleSize.marginBottom,
         }}>{title}</h2>
-        <div style={styles.titleLine}></div>
+
       </div>
 
       {/* קרוסלה */}
@@ -121,8 +121,8 @@ function RecipeCarousel({ title, recipes = [] }) {
           }}
         >
           {visible.map((recipe, i) => (
-            <div 
-              key={recipe.idMeal || recipe.id || i} 
+            <div
+              key={recipe.idMeal || recipe.id || i}
               style={styles.cardWrapper}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-8px)";
@@ -187,22 +187,20 @@ const styles = {
   titleWrapper: {
     textAlign: "center",
     marginBottom: "4px",
+    marginTop: "40px",
+    paddingLeft: "0",
+    width: "100%",
+    maxWidth: "1400px",
   },
   titleText: {
-    fontWeight: "600",
-    fontFamily: "'Poppins', sans-serif",
-    color: "white",
+    fontWeight: "700",
+    fontFamily: "'Cormorant Garamond', serif",
+    color: "#0A1128",
     letterSpacing: "0.5px",
     textTransform: "uppercase",
-    textShadow: "0 2px 12px rgba(255, 255, 255, 0.25)",
+    textShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   },
-  titleLine: {
-    height: "2px",
-    width: "60%",
-    margin: "0 auto",
-    borderRadius: "8px",
-    background: "linear-gradient(90deg, #ff6a00, #ff944d)",
-  },
+
 
   carouselWrapper: {
     display: "flex",
@@ -241,13 +239,13 @@ const styles = {
 
   arrowBtn: {
     padding: "2px 4px",
-    color: "#ffc947",
+    color: "#FF9F1C",
     background: "rgba(45, 24, 16, 0.6)",
-    border: "1px solid rgba(255, 140, 66, 0.4)",
+    border: "1px solid rgba(255, 159, 28, 0.4)",
     borderRadius: "50%",
     cursor: "pointer",
     transition: "all 0.3s ease",
-    boxShadow: "0 4px 12px rgba(255, 140, 66, 0.3)",
+    boxShadow: "0 4px 12px rgba(255, 159, 28, 0.3)",
     flexShrink: 0,
     display: "flex",
     alignItems: "center",

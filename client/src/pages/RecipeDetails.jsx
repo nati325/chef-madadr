@@ -59,17 +59,21 @@ function RecipeDetails() {
 
   if (loading) {
     return (
-      <div style={styles.container}>
-        <p style={styles.message}>Loading recipe...</p>
+      <div className="recipe-details-page">
+        <p className="details-message">Loading recipe...</p>
       </div>
     );
   }
 
   if (error || !recipe) {
     return (
-      <div style={styles.container}>
-        <p style={styles.error}>{error || "Recipe not found"}</p>
-
+      <div className="recipe-details-page">
+        <p className="details-error">{error || "Recipe not found"}</p>
+        <div className="back-btn-container" style={{ textAlign: 'center' }}>
+          <button onClick={() => navigate(-1)} className="details-back-button">
+            Go Back
+          </button>
+        </div>
       </div>
     );
   }
@@ -106,96 +110,92 @@ function RecipeDetails() {
   const recipeArea = isUserRecipe ? 'User Recipe' : recipe.strArea;
   const recipeVideo = isUserRecipe ? null : recipe.strYoutube;
 
-  const isFavorite = favorites.some((fav) => fav.idMeal === recipeId || fav._id === recipeId);
+  const isFavorite = favorites.includes(recipeId);
 
   return (
-    <div style={styles.page}>
+    <div className="recipe-details-page">
+      <div className="recipe-container">
 
 
-      {/* תמונת המתכון */}
-      <div style={styles.imageWrapper}>
-        <img
-          src={recipeImage || 'https://via.placeholder.com/800x400?text=No+Image'}
-          alt={recipeTitle}
-          style={styles.image}
-        />
+        {/* Hero Section */}
+        <div className="recipe-hero">
+          <img
+            src={recipeImage || 'https://via.placeholder.com/800x400?text=No+Image'}
+            alt={recipeTitle}
+            className="recipe-image"
+          />
 
-        {/* כפתור לב */}
-        <button
-          style={{
-            ...styles.favoriteBtn,
-            background: isFavorite ? "rgba(255, 201, 71, 0.9)" : "rgba(45, 24, 16, 0.9)",
-            borderColor: isFavorite ? "#ffc947" : "rgba(255, 140, 66, 0.6)",
-            transform: isFavorite ? "scale(1.1)" : "scale(1)",
-          }}
-          onClick={() => toggleFavorite(recipe)}
-          title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-        >
-          {isFavorite ? "❤️" : "🤍"}
-        </button>
-      </div>
-
-      {/* תוכן המתכון */}
-      <div style={styles.content}>
-        <h1 style={styles.title}>{recipeTitle}</h1>
-
-        {/* מטא-דאטה */}
-        <div style={styles.meta}>
-          {recipeCategory && (
-            <span style={styles.badge}>📂 {recipeCategory}</span>
-          )}
-          {recipeArea && (
-            <span style={styles.badge}>🌍 {recipeArea}</span>
-          )}
-          {recipeDifficulty && (
-            <span style={styles.badge}>⭐ {recipeDifficulty}</span>
-          )}
-          {recipeTime && (
-            <span style={styles.badge}>⏱️ {recipeTime} minutes</span>
-          )}
-          {!isUserRecipe && recipe.strTags && (
-            <span style={styles.badge}>🏷️ {recipe.strTags}</span>
-          )}
+          <button
+            className="recipe-favorite-btn"
+            onClick={() => toggleFavorite(recipeId)}
+            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            {isFavorite ? "❤️" : "🤍"}
+          </button>
         </div>
 
-        {/* מרכיבים + הוראות הכנה בשורה אחת */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "30px" }}>
-          {/* מרכיבים */}
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>🥘 Ingredients</h2>
-            <ul style={styles.ingredientsList}>
-              {ingredients.length > 0 ? (
-                ingredients.map((ing, idx) => (
-                  <li key={idx} style={styles.ingredient}>
-                    • {ing}
-                  </li>
-                ))
-              ) : (
-                <p style={{ color: '#d4b896' }}>No ingredients</p>
+        {/* Main Content */}
+        <div className="recipe-content">
+          <div className="recipe-header">
+            <h1 className="recipe-title">{recipeTitle}</h1>
+
+            <div className="recipe-meta">
+              {recipeCategory && (
+                <span className="meta-badge">📂 {recipeCategory}</span>
               )}
-            </ul>
+              {recipeArea && (
+                <span className="meta-badge">🌍 {recipeArea}</span>
+              )}
+              {recipeDifficulty && (
+                <span className="meta-badge">⭐ {recipeDifficulty}</span>
+              )}
+              {recipeTime && (
+                <span className="meta-badge">⏱️ {recipeTime} min</span>
+              )}
+              {!isUserRecipe && recipe.strTags && (
+                <span className="meta-badge">🏷️ {recipe.strTags}</span>
+              )}
+            </div>
           </div>
 
-          {/* הוראות הכנה */}
-          <div style={styles.section}>
-            <h2 style={styles.sectionTitle}>👨‍🍳 Instructions</h2>
-            <div style={styles.instructions}>
-              {recipeInstructions || 'No instructions'}
+          <div className="recipe-content-grid">
+            {/* Ingredients */}
+            <div className="recipe-section">
+              <h2 className="recipe-section-title">🥘 Ingredients</h2>
+              <ul className="ingredients-list">
+                {ingredients.length > 0 ? (
+                  ingredients.map((ing, idx) => (
+                    <li key={idx} className="ingredient-item">
+                      <span className="ingredient-bullet">•</span> {ing}
+                    </li>
+                  ))
+                ) : (
+                  <p>No ingredients listed.</p>
+                )}
+              </ul>
             </div>
 
-            {/* וידאו (אם קיים) */}
-            {recipeVideo && (
-              <div style={{ marginTop: "20px", textAlign: "center" }}>
-                <a
-                  href={recipeVideo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="details-video-link"
-                >
-                  🎥 Watch Video
-                </a>
+            {/* Instructions */}
+            <div className="recipe-section">
+              <h2 className="recipe-section-title">👨‍🍳 Instructions</h2>
+              <div className="instructions-text">
+                {recipeInstructions || 'No instructions provided.'}
               </div>
-            )}
+
+              {/* Video Link */}
+              {recipeVideo && (
+                <div className="video-link-container">
+                  <a
+                    href={recipeVideo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="video-link"
+                  >
+                    🎥 Watch Video Tutorial
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -204,162 +204,3 @@ function RecipeDetails() {
 }
 
 export default RecipeDetails;
-
-// 🎨 STYLES
-const styles = {
-  page: {
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #1f1410, #2a1915)",
-    color: "#f5e6d3",
-    paddingTop: "calc(var(--nav-height, 70px) + 20px)",
-    paddingBottom: "40px",
-  },
-  container: {
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: "var(--nav-height, 70px)",
-  },
-  message: {
-    fontSize: "18px",
-    color: "#f5e6d3",
-  },
-  error: {
-    fontSize: "18px",
-    color: "#ff8c42",
-    marginBottom: "20px",
-  },
-  backBtn: {
-    padding: "10px 24px",
-    background: "rgba(255, 140, 66, 0.2)",
-    border: "1px solid rgba(255, 140, 66, 0.5)",
-    borderRadius: "8px",
-    color: "#ffc947",
-    fontSize: "16px",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-  },
-  backBtnTop: {
-    position: "fixed",
-    top: "calc(var(--nav-height, 70px) + 20px)",
-    left: "20px",
-    padding: "10px 20px",
-    background: "rgba(45, 24, 16, 0.9)",
-    border: "1px solid rgba(255, 140, 66, 0.4)",
-    borderRadius: "8px",
-    color: "#ffc947",
-    fontSize: "16px",
-    cursor: "pointer",
-    zIndex: 100,
-    transition: "all 0.3s ease",
-  },
-  imageWrapper: {
-    width: "100%",
-    maxWidth: "900px",
-    margin: "0 auto 30px",
-    position: "relative",
-    borderRadius: "16px",
-    overflow: "hidden",
-    boxShadow: "0 10px 40px rgba(29, 15, 10, 0.8)",
-  },
-  image: {
-    width: "100%",
-    height: "auto",
-    maxHeight: "350px",
-    objectFit: "cover",
-    display: "block",
-  },
-  favoriteBtn: {
-    position: "absolute",
-    top: "20px",
-    right: "20px",
-    background: "rgba(45, 24, 16, 0.9)",
-    border: "2px solid rgba(255, 140, 66, 0.6)",
-    borderRadius: "50%",
-    width: "60px",
-    height: "60px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    fontSize: "32px",
-    transition: "transform 0.2s ease",
-    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)",
-  },
-  content: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    padding: "0 20px",
-  },
-  title: {
-    fontSize: "clamp(24px, 4vw, 32px)",
-    fontWeight: "700",
-    marginBottom: "16px",
-    textAlign: "center",
-    color: "#ffc947",
-    textShadow: "0 2px 10px rgba(255, 201, 71, 0.3)",
-  },
-  meta: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "12px",
-    justifyContent: "center",
-    marginBottom: "40px",
-  },
-  badge: {
-    padding: "6px 12px",
-    background: "rgba(255, 140, 66, 0.15)",
-    border: "1px solid rgba(255, 140, 66, 0.4)",
-    borderRadius: "20px",
-    fontSize: "12px",
-    color: "#ffc947",
-  },
-  section: {
-    marginBottom: "0",
-    background: "rgba(45, 24, 16, 0.5)",
-    padding: "20px",
-    borderRadius: "16px",
-    border: "1px solid rgba(255, 140, 66, 0.2)",
-  },
-  sectionTitle: {
-    fontSize: "18px",
-    fontWeight: "600",
-    marginBottom: "12px",
-    color: "#ff8c42",
-  },
-  ingredientsList: {
-    listStyle: "none",
-    padding: 0,
-    margin: 0,
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-  },
-  ingredient: {
-    padding: "8px 12px",
-    background: "rgba(255, 140, 66, 0.1)",
-    borderRadius: "8px",
-    fontSize: "13px",
-    borderLeft: "3px solid #ff8c42",
-  },
-  instructions: {
-    fontSize: "13px",
-    lineHeight: "1.6",
-    whiteSpace: "pre-wrap",
-    color: "#f5e6d3",
-  },
-  instructionsList: {
-    listStyle: "decimal",
-    paddingRight: "20px",
-    margin: 0,
-    color: "#f5e6d3",
-  },
-  instructionItem: {
-    fontSize: "13px",
-    lineHeight: "1.6",
-    marginBottom: "10px",
-    color: "#f5e6d3",
-  },
-};

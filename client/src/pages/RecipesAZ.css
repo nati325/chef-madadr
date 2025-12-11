@@ -4,9 +4,8 @@
   min-height: 100vh;
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top, #4a2f1f 0, transparent 55%), 
-              linear-gradient(180deg, #1f1410, #2a1915);
-  color: #f5e6d3;
+  background: white;
+  color: #2C2C2C;
   box-sizing: border-box;
   padding-top: 30px;
   padding-inline: 10px;
@@ -26,12 +25,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(45, 24, 16, 0.98);
+  background: white;
   backdrop-filter: blur(12px);
   border-radius: 50px;
   padding: 14px 24px;
-  box-shadow: 0 8px 32px rgba(255, 140, 66, 0.25), 0 2px 8px rgba(0, 0, 0, 0.4);
-  border: 2px solid rgba(255, 140, 66, 0.3);
+  box-shadow: 0 4px 16px rgba(10, 17, 40, 0.1);
+  border: 2px solid rgba(255, 159, 28, 0.3);
   width: 100%;
   max-width: 600px;
   transition: all 0.3s ease;
@@ -40,8 +39,8 @@
 }
 
 .search-box:hover {
-  border-color: rgba(255, 140, 66, 0.5);
-  box-shadow: 0 12px 40px rgba(255, 140, 66, 0.35), 0 4px 12px rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 159, 28, 0.5);
+  box-shadow: 0 12px 40px rgba(255, 159, 28, 0.35), 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .search-icon {
@@ -55,7 +54,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #f5e6d3 !important;
+  color: #0A1128 !important;
   font-size: 16px;
   min-width: 0;
   font-weight: 400;
@@ -64,14 +63,14 @@
 }
 
 .search-input::placeholder {
-  color: rgba(245, 230, 211, 0.6) !important;
+  color: rgba(44, 44, 44, 0.5) !important;
 }
 
 .search-select {
   border-radius: 20px;
-  border: 1px solid rgba(255, 140, 66, 0.5);
-  background: rgba(45, 24, 16, 0.95);
-  color: #ffc947;
+  border: 2px solid rgba(255, 159, 28, 0.3);
+  background: white;
+  color: #0A1128;
   font-size: 14px;
   padding: 8px 14px;
   outline: none;
@@ -84,7 +83,7 @@
 }
 
 .search-select:hover {
-  border-color: #ffc947;
+  border-color: #FF9F1C;
   background: rgba(45, 24, 16, 1);
 }
 
@@ -105,7 +104,7 @@
   padding: 0 20px;
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .empty-text {
@@ -192,5 +191,104 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 12px;
     padding: 0 10px;
+  }
+}
+
+/* Skeleton Loader */
+.skeleton-card {
+  background: #2d1810;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(29, 15, 10, 0.8);
+  border: 1px solid rgba(255, 140, 66, 0.2);
+  height: 380px;
+  /* Approximate height of a real card */
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-pulse {
+  background: linear-gradient(90deg,
+      #2d1810 0%,
+      #3d2817 50%,
+      #2d1810 100%);
+  background-size: 200% 100%;
+  animation: pulse 1.5s infinite linear;
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 150px;
+  background-color: #3d2817;
+}
+
+.skeleton-body {
+  padding: 10px 12px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-text {
+  height: 14px;
+  border-radius: 4px;
+  background-color: #3d2817;
+}
+
+.skeleton-text.title {
+  height: 22px;
+  width: 70%;
+  margin-bottom: 8px;
+}
+
+.skeleton-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.skeleton-text.meta-tag {
+  width: 30%;
+  height: 12px;
+}
+
+.skeleton-text.line {
+  width: 100%;
+}
+
+.skeleton-text.line.short {
+  width: 60%;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 140, 66, 0.3);
+  border-top: 3px solid #ff8c42;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

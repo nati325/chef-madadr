@@ -52,7 +52,7 @@ function RecipeCard({ recipe }) {
   };
 
   return (
-    <Link 
+    <Link
       to={`/recipe/${id}`}
       className="recipe-card"
       onMouseEnter={(e) => {
@@ -89,9 +89,9 @@ function RecipeCard({ recipe }) {
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
         ) : (
-          <div style={{ 
-            width: "100%", 
-            height: "100%", 
+          <div style={{
+            width: "100%",
+            height: "100%",
             background: "linear-gradient(135deg, #4a2f1f, #2d1810)",
             display: "flex",
             alignItems: "center",
@@ -134,22 +134,22 @@ function RecipeCard({ recipe }) {
         </button>
       </div>
 
-      <div style={{ 
-        padding: isDesktop ? "12px 16px 16px" : "3px 5px 5px", 
-        display: "flex", 
-        flexDirection: "column", 
+      <div style={{
+        padding: isDesktop ? "12px 16px 16px" : "3px 5px 5px",
+        display: "flex",
+        flexDirection: "column",
         overflow: "hidden",
         position: "absolute",
         bottom: 0,
         left: 0,
         right: 0,
-        background: "linear-gradient(to top, rgba(45, 24, 16, 0.95) 0%, rgba(45, 24, 16, 0.85) 70%, transparent 100%)",
-        backdropFilter: "blur(4px)"
+        background: "linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 100%)",
+        backdropFilter: "blur(12px)"
       }}>
-        <h3 style={{ 
-          fontSize: isDesktop ? "18px" : "9px", 
-          margin: isDesktop ? "0 0 8px" : "0 0 2px", 
-          color: "#f5e6d3", 
+        <h3 style={{
+          fontSize: isDesktop ? "18px" : "9px",
+          margin: isDesktop ? "0 0 8px" : "0 0 2px",
+          color: "#f5e6d3",
           lineHeight: "1.1",
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -159,11 +159,11 @@ function RecipeCard({ recipe }) {
           fontWeight: "600",
           textShadow: "0 1px 3px rgba(0,0,0,0.5)"
         }}>{title}</h3>
-        <div style={{ 
-          fontSize: isDesktop ? "16px" : "7px", 
-          color: "#ffc947", 
-          display: "flex", 
-          justifyContent: "space-between", 
+        <div style={{
+          fontSize: isDesktop ? "16px" : "7px",
+          color: "#ffc947",
+          display: "flex",
+          justifyContent: "space-between",
           gap: isDesktop ? "8px" : "2px",
         }}>
           {category && <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{category}</span>}

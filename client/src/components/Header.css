@@ -1,29 +1,26 @@
 /* ===============================
-      GLOBAL VARIABLES
+   PREMIUM HEADER - Navy & Gold Theme
    =============================== */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --nav-height: 70px;
-  --nav-bg: linear-gradient(135deg, #1a0f0a, #2d1810, #1a0f0a);
-  --txt-color: #f5e6d3;
-  --txt-hover: #ff8c42;
-  --txt-active: #ffc947;
-  --font-main: 'Poppins', sans-serif;
-  --font-logo: 'Playfair Display', serif;
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  /* --nav-border: removed hardcoded, verify usage */
+  --nav-border: rgba(255, 159, 28, 0.3);
+  /* #FF9F1C */
+  --txt-hover: #D35400;
+  /* #D35400 */
+  --txt-active: #000000;
+  --font-main: 'Inter', sans-serif;
+  --font-logo: 'Cormorant Garamond', serif;
 }
 
 /* ===============================
-      RESET + FIX FOR HERO
+   HEADER
    =============================== */
-body {
-  margin: 0;
-  overflow-x: hidden;
-  font-family: var(--font-main);
-}
-
 /* ===============================
-      HEADER
+   HEADER
    =============================== */
 header {
   width: 100%;
@@ -35,7 +32,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 10px;
 
   position: fixed;
   top: 0;
@@ -43,70 +40,97 @@ header {
   right: 0;
   z-index: 9999;
 
-  box-shadow: 0 4px 20px rgba(29, 15, 10, 0.7);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 140, 66, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05), 0 0 1px rgba(212, 175, 55, 0.2);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   overflow-x: auto;
   overflow-y: hidden;
 }
 
-/* הסתרת scrollbar אבל שומר פונקציונליות */
+/* Hide scrollbar while keeping functionality */
 header::-webkit-scrollbar {
   height: 0;
 }
 
-header::-webkit-scrollbar-track {
-  background: transparent;
+/* --- Nav Sections --- */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 0 0 auto;
+  /* Allow natural width */
+  justify-content: flex-start;
 }
 
-header::-webkit-scrollbar-thumb {
-  background: transparent;
+.nav-center {
+  flex: 1;
+  /* Take up all remaining space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Center content within this space */
+  text-align: center;
+  position: static;
+  /* Remove absolute */
+  transform: none;
+  /* Remove transform */
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 0 0 auto;
+  /* Allow natural width */
+  justify-content: flex-end;
+}
+
+/* --- Title --- */
 header h1 {
   color: var(--txt-color);
   margin: 0;
   font-size: 1.6rem;
-  font-weight: 900;
+  font-weight: 700;
   font-family: var(--font-logo);
   letter-spacing: 0.5px;
-  background: linear-gradient(135deg, #ff8c42, #ffc947, #ffaa33);
+  background: linear-gradient(135deg, #D35400 0%, #FF9F1C 50%, #D35400 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 2px 10px rgba(255, 140, 66, 0.4);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
-  flex-shrink: 0;
+  position: relative;
 }
 
 header h1:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.5));
 }
 
-/* ===============================
-      NAVIGATION
-   =============================== */
-header nav {
-  display: flex;
-  gap: 20px;
-  flex-wrap: nowrap;
-  align-items: center;
-  flex-shrink: 0;
+/* Responsive Title Shortening */
+@media (max-width: 1024px) {
+  .title-long {
+    display: none;
+  }
 }
 
-header nav a {
+/* --- Navigation Links --- */
+header nav a,
+.nav-left a,
+.nav-right a {
   color: var(--txt-color);
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   font-family: var(--font-main);
   position: relative;
-  padding-bottom: 3px;
-  transition: all 0.3s ease;
+  padding: 6px 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: 0.3px;
   white-space: nowrap;
+  text-transform: capitalize;
 }
 
 header nav a:hover {
@@ -114,22 +138,18 @@ header nav a:hover {
   transform: translateY(-2px);
 }
 
-/* קו תחתון שיופיע בהובר */
+/* Elegant gold underline */
 header nav a::after {
   content: "";
   position: absolute;
   width: 0;
-  height: 2.5px;
+  height: 2px;
   bottom: 0;
-  left: 0;
-  background: linear-gradient(90deg, var(--txt-hover), var(--txt-active));
-  border-radius: 2px;
-  box-shadow: 0 0 12px rgba(255, 140, 66, 0.8), 0 0 20px rgba(255, 140, 66, 0.4);
-  transition: width 0.3s ease-in-out, box-shadow 0.3s ease;
-}
-
-header nav a:hover::after {
-  box-shadow: 0 0 16px rgba(255, 140, 66, 1), 0 0 30px rgba(255, 140, 66, 0.6);
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--txt-hover), transparent);
+  box-shadow: 0 0 8px rgba(255, 159, 28, 0.6);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 header nav a:hover::after,
@@ -143,17 +163,17 @@ header nav a.active {
 }
 
 /* ===============================
-      MOBILE (RESPONSIVE)
+   MOBILE (RESPONSIVE)
    =============================== */
 @media (max-width: 768px) {
   header {
     height: auto;
-    min-height: var(--nav-height);
-    padding: 12px 20px;
+    min-height: auto;
+    padding: 10px 15px;
+    /* Compact padding */
     flex-direction: column;
-    gap: 15px;
-    overflow-x: visible;
-    box-shadow: 0 2px 15px rgba(29, 15, 10, 0.9);
+    gap: 8px;
+    box-shadow: 0 2px 10px rgba(10, 17, 40, 0.1);
   }
 
   header h1 {
@@ -161,48 +181,77 @@ header nav a.active {
     text-align: center;
     width: 100%;
     margin: 0;
-    letter-spacing: 0.3px;
+    order: 1;
+    /* Title First */
   }
 
-  header nav {
-    gap: 15px;
+  /* Compact Nav Container */
+  .nav-left,
+  .nav-right,
+  .nav-center {
     width: 100%;
     justify-content: center;
-    flex-wrap: wrap;
-    padding: 5px 0;
+    display: none;
+    /* Hide default structure if complex */
   }
 
-  header nav a {
-    font-size: 0.9rem;
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: rgba(45, 24, 16, 0.3);
-    transition: all 0.3s ease;
-  }
+  /* We need to ensure the nav links are visible. 
+     Assuming links are direct children of 'nav' or inside these containers.
+     Let's style the containers to be a single scrollable row if possible.
+  */
 
-  header nav a:hover,
-  header nav a.active {
-    background: rgba(255, 140, 66, 0.2);
-    transform: translateY(-1px);
-  }
-}
-
-@media (max-width: 480px) {
-  header {
-    padding: 10px 15px;
+  /* Re-displaying for standard nav structure */
+  .nav-left,
+  .nav-right {
+    display: flex;
+    order: 2;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
     gap: 12px;
+    width: 100%;
+    justify-content: flex-start;
+    /* scroll from start */
   }
 
-  header h1 {
-    font-size: 1.1rem;
+  .nav-center {
+    display: flex;
+    order: 1;
   }
 
+  /* Unified Mobile Nav Strip */
   header nav {
-    gap: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    /* No wrapping, SCROLL instead */
+    overflow-x: auto;
+    gap: 12px;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 4px 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+  }
+
+  header nav::-webkit-scrollbar {
+    display: none;
   }
 
   header nav a {
-    font-size: 0.8rem;
-    padding: 5px 10px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+    /* Don't shrink links */
+    white-space: nowrap;
+  }
+
+  header nav a.active {
+    background: rgba(255, 159, 28, 0.15);
+    border-color: rgba(255, 159, 28, 0.4);
+    color: #D35400;
   }
 }

@@ -1,7 +1,12 @@
+/* ===============================
+   PREMIUM HERO SECTION
+   Fixed at top with scrolling content below
+   =============================== */
+
 .hero {
   width: 100%;
   max-width: 100vw;
-  min-height: 400px;
+  min-height: 350px;
   height: auto;
   padding: 60px 8%;
   margin: 0;
@@ -19,47 +24,65 @@
   position: relative;
 
   transition: background-image 0.6s ease-in-out;
+  border-bottom: 3px solid rgba(255, 159, 28, 0.3);
+  box-shadow: 0 4px 20px rgba(10, 17, 40, 0.15);
 }
 
-.hero::after {
-  content: "";
+/* Semi-transparent DARK overlay to improve text visibility */
+.hero::before {
+  content: '';
   position: absolute;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.35);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  /* Dark layer */
   z-index: 1;
+  transition: background 0.3s ease;
 }
 
 .hero-overlay {
   position: relative;
   z-index: 2;
-  color: white;
-  max-width: 90%;
+  color: #FFFFFF;
+  /* White text */
   width: 100%;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
   word-wrap: break-word;
+  padding-left: 3rem;
 }
 
 .hero-overlay h1 {
-  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   margin-bottom: 1rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-family: 'Cormorant Garamond', serif;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+  /* Dark shadow */
+  letter-spacing: 1px;
 }
 
 .hero-overlay p {
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  line-height: 1.4;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1.6;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  color: #f0f0f0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
   .hero {
-    min-height: 300px;
+    min-height: 400px;
     height: auto;
-    padding: 40px 5%;
+    padding: 50px 5%;
   }
 
   .hero-overlay {
@@ -67,7 +90,7 @@
   }
 
   .hero-overlay h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
 
   .hero-overlay p {
@@ -77,15 +100,15 @@
 
 @media (max-width: 480px) {
   .hero {
-    min-height: 250px;
-    padding: 30px 5%;
+    min-height: 350px;
+    padding: 40px 5%;
   }
 
   .hero-overlay h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .hero-overlay p {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }

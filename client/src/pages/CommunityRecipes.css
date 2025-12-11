@@ -2,7 +2,7 @@
 
 .community-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1f1410, #2a1915);
+  background: white;
   padding: 20px 10px;
   box-sizing: border-box;
 }
@@ -26,32 +26,32 @@
 .page-title {
   font-size: clamp(1.8rem, 5vw, 3rem);
   font-weight: 700;
-  color: #ffc947;
+  color: #0A1128;
   margin: 0;
 }
 
 .add-recipe-btn {
   padding: 14px 28px;
-  background: linear-gradient(135deg, #ffc947, #ff8c42);
+  background: linear-gradient(135deg, #FF9F1C 0%, #D35400 100%);
   border: none;
   border-radius: 8px;
-  color: #1a0f0a;
+  color: #FFFFFF;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.4);
+  box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
   white-space: nowrap;
 }
 
 .add-recipe-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 140, 66, 0.6);
+  box-shadow: 0 6px 20px rgba(184, 134, 11, 0.5);
 }
 
 .loading {
   text-align: center;
-  color: #f5e6d3;
+  color: #4A5568;
   font-size: 20px;
   padding: 60px 20px;
 }
@@ -122,27 +122,27 @@
 }
 
 .edit-btn {
-  background: rgba(255, 201, 71, 0.2);
-  border: 1px solid rgba(255, 201, 71, 0.5);
-  color: #ffc947;
+  background: linear-gradient(135deg, #FF9F1C 0%, #D35400 100%);
+  border: none;
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
 }
 
 .edit-btn:hover {
-  background: rgba(255, 201, 71, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 201, 71, 0.3);
+  box-shadow: 0 6px 20px rgba(211, 84, 0, 0.5);
 }
 
 .delete-btn {
-  background: rgba(255, 0, 0, 0.2);
-  border: 1px solid rgba(255, 0, 0, 0.5);
-  color: #ff6b6b;
+  background: linear-gradient(135deg, #FF9F1C 0%, #D35400 100%);
+  border: none;
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
 }
 
 .delete-btn:hover {
-  background: rgba(255, 0, 0, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(211, 84, 0, 0.5);
 }
 
 @media (max-width: 768px) {

@@ -11,14 +11,14 @@
     background: rgba(45, 24, 16, 0.8);
     padding: 2rem;
     border-radius: 16px;
-    border: 1px solid rgba(255, 140, 66, 0.2);
+    border: 1px solid rgba(255, 159, 28, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .edit-recipe-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
-    color: #ffc947;
+    color: #FF9F1C;
     margin-bottom: 2rem;
     text-align: center;
 }
@@ -37,7 +37,7 @@
 
 .form-group label {
     font-weight: 600;
-    color: #ff8c42;
+    color: #FF9F1C;
 }
 
 .form-group input,
@@ -45,7 +45,7 @@
 .form-group select {
     padding: 0.8rem;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 140, 66, 0.3);
+    border: 1px solid rgba(255, 159, 28, 0.3);
     border-radius: 8px;
     color: #f5e6d3;
     font-size: 1rem;
@@ -56,9 +56,9 @@
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #ffc947;
+    border-color: #FF9F1C;
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 2px rgba(255, 201, 71, 0.2);
+    box-shadow: 0 0 0 2px rgba(255, 159, 28, 0.2);
 }
 
 .form-group textarea {
@@ -125,7 +125,7 @@
 
 .save-btn {
     flex: 2;
-    background: linear-gradient(135deg, #ffc947, #ff8c42);
+    background: linear-gradient(135deg, #FF9F1C, #D35400);
     color: #1a0f0a;
     border: none;
     padding: 1rem;
@@ -138,14 +138,14 @@
 
 .save-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 201, 71, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
 }
 
 .cancel-btn {
     flex: 1;
     background: transparent;
-    border: 1px solid rgba(255, 140, 66, 0.4);
-    color: #ffc947;
+    border: 1px solid rgba(255, 159, 28, 0.4);
+    color: #FF9F1C;
     padding: 1rem;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -155,7 +155,7 @@
 }
 
 .cancel-btn:hover {
-    background: rgba(255, 140, 66, 0.1);
+    background: rgba(255, 159, 28, 0.1);
 }
 
 .error-message {

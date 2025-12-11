@@ -15,6 +15,7 @@ import CommunityRecipes from "./pages/CommunityRecipes";
 import EditRecipe from "./pages/EditRecipe";
 import AdminDashboard from "./pages/AdminDashboard";
 
+
 // 👇 ייבוא הקונטקסט
 import { FavoritesProvider } from "./context/FavoritesContext";
 import { CourseProvider } from "./context/CourseContext";
@@ -38,6 +39,7 @@ function App() {
           <Route path="/community-recipes" element={<CommunityRecipes />} />
           <Route path="/edit-recipe/:id" element={<EditRecipe />} />
           <Route path="/admin" element={<AdminDashboard />} />
+
         </Routes>
       </>
     </FavoritesProvider>

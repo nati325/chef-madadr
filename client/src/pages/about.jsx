@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./about.css";
+import Apoitment from "../components/Apoitment";
 
 function About() {
+  const [showAppointment, setShowAppointment] = useState(false);
+
   return (
     <div style={styles.page}>
+      {showAppointment && <Apoitment onClose={() => setShowAppointment(false)} />}
+
       <div style={styles.container}>
-        {/* Header with Chef Image */}
         <div style={styles.heroSection} className="about-hero">
           <div style={styles.chefImageWrapper} className="about-chef-image-wrapper">
             <img
@@ -21,7 +25,7 @@ function About() {
             />
           </div>
           <div style={styles.heroText} className="about-hero-text">
-            <h1 style={styles.mainTitle} className="about-main-title">🌟 Meet Chef Netanel Madar</h1>
+            <h1 style={styles.mainTitle} className="about-main-title">Meet Chef Netanel Madar</h1>
             <p style={styles.heroDescription}>
               A passionate culinary artist and full-stack developer who transforms code and cuisine into extraordinary experiences.
               With a deep love for both technology and gastronomy, Chef Madar brings innovation to every dish and every line of code.
@@ -30,26 +34,22 @@ function About() {
               From mastering traditional recipes to crafting modern web applications,
               his journey is fueled by creativity, precision, and an unwavering commitment to excellence.
             </p>
-            <a
-              href="https://wa.me/972535378985?text=Hello%20Chef%20Madar%2C%20I%20would%20like%20to%20schedule%20a%20meeting"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowAppointment(true)}
               style={styles.quoteBadge}
               className="about-quote-badge"
             >
-              📅 Schedule a Meeting
-            </a>
+              Schedule a Meeting
+            </button>
           </div>
         </div>
 
-        {/* Original Header */}
         <div style={styles.header}>
           <h1 style={styles.sectionTitleLarge}>About – Chef Now</h1>
         </div>
 
-        {/* What Is the Purpose */}
         <section style={styles.section} className="about-section">
-          <h2 style={styles.sectionTitle}>🔍 What Is the Purpose of the Website?</h2>
+          <h2 style={styles.sectionTitle}>What Is the Purpose of the Website?</h2>
           <p style={styles.text}>
             Chef Now was created to make cooking <strong>simple, fast, and enjoyable</strong> for everyone —
             from home cooks to people who just want to make something tasty right now.
@@ -60,9 +60,8 @@ function About() {
           </p>
         </section>
 
-        {/* How Does It Work */}
         <section style={styles.section} className="about-section">
-          <h2 style={styles.sectionTitle}>⚙ How Does the Website Work?</h2>
+          <h2 style={styles.sectionTitle}>How Does the Website Work?</h2>
           <p style={styles.text}>
             We use a free public recipes API to fetch real recipes from around the world.
           </p>
@@ -70,10 +69,10 @@ function About() {
             You can search recipes by <strong>name, category, or country of origin</strong>.
           </p>
           <div style={styles.featureList}>
-            <div style={styles.featureItem}>✔ Image</div>
-            <div style={styles.featureItem}>✔ Ingredients list</div>
-            <div style={styles.featureItem}>✔ Step-by-step instructions</div>
-            <div style={styles.featureItem}>✔ Preparation time</div>
+            <div style={styles.featureItem}>Image</div>
+            <div style={styles.featureItem}>Ingredients list</div>
+            <div style={styles.featureItem}>Step-by-step instructions</div>
+            <div style={styles.featureItem}>Preparation time</div>
           </div>
           <p style={styles.text}>
             We also display recipes in carousels by theme (Vegan, Chicken, Quick Meals, etc.).
@@ -83,24 +82,22 @@ function About() {
           </p>
         </section>
 
-        {/* About the Creator */}
         <section style={styles.section} className="about-section">
-          <h2 style={styles.sectionTitle}>👨‍💻 About the Creator</h2>
+          <h2 style={styles.sectionTitle}>About the Creator</h2>
           <p style={styles.text}>
-            This website was built by <strong>Netanel</strong>, a passionate Full Stack developer and food lover 🍲🔥
+            This website was built by <strong>Netanel</strong>, a passionate Full Stack developer and food lover
           </p>
           <p style={styles.text}>
             Hi! I'm Netanel Madar, a Full Stack developer and cooking enthusiast.
             I built this project to combine two things I love — <strong>code and food</strong>.
           </p>
           <p style={styles.textHighlight}>
-            This website will keep growing and improving. Stay tuned! ❤
+            This website will keep growing and improving. Stay tuned!
           </p>
         </section>
 
-        {/* The Story */}
         <section style={styles.section} className="about-section">
-          <h2 style={styles.sectionTitle}>📖 The Story Behind the Website</h2>
+          <h2 style={styles.sectionTitle}>The Story Behind the Website</h2>
           <p style={styles.text}>
             The idea started with a simple question: <em>"What should I cook today?"</em>
           </p>
@@ -114,50 +111,44 @@ function About() {
           </blockquote>
         </section>
 
-        {/* Features */}
         <section style={styles.section} className="about-section">
-          <h2 style={styles.sectionTitle}>🧩 Features</h2>
+          <h2 style={styles.sectionTitle}>Features</h2>
           <div style={styles.featureGrid}>
-            <div style={styles.feature}>🔎 Smart recipe search</div>
-            <div style={styles.feature}>🖼 Clean and modern recipe cards</div>
-            <div style={styles.feature}>🎠 Carousels by theme</div>
-            <div style={styles.feature}>📄 Full recipe details page</div>
-            <div style={styles.feature}>⭐ Favorites system (Coming Soon)</div>
-            <div style={styles.feature}>🌍 More APIs coming soon</div>
-            <div style={styles.feature}>👨‍🍳 User recipe uploads (Future)</div>
+            <div style={styles.feature}>Smart recipe search</div>
+            <div style={styles.feature}>Clean and modern recipe cards</div>
+            <div style={styles.feature}>Carousels by theme</div>
+            <div style={styles.feature}>Full recipe details page</div>
+            <div style={styles.feature}>Favorites system (Coming Soon)</div>
+            <div style={styles.feature}>More APIs coming soon</div>
+            <div style={styles.feature}>User recipe uploads (Future)</div>
           </div>
         </section>
 
-        {/* Contact */}
         <section style={styles.section} className="about-section">
-          <h2 style={styles.sectionTitle}>📞 Contact</h2>
+          <h2 style={styles.sectionTitle}>Contact</h2>
           <p style={styles.text}>You can reach me here:</p>
           <div style={styles.contactGrid}>
             <div style={styles.contactItem} className="about-contact-item">
-              <span style={styles.contactIcon}>📧</span>
+              <span style={styles.contactIcon}></span>
               <span style={styles.contactLabel}>Email:</span>
-              <button
+              <span
+                role="button"
+                className="email-link"
                 onClick={() => {
                   navigator.clipboard.writeText('netaneldama@gmail.com');
-                  alert('Email copied to clipboard! ✅');
+                  alert('Email copied to clipboard!');
                 }}
                 style={{
                   ...styles.contactValue,
                   cursor: "pointer",
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  font: "inherit",
-                  color: "inherit",
                   textDecoration: "underline",
-                  textAlign: "left"
                 }}
               >
                 netaneldama@gmail.com
-              </button>
+              </span>
             </div>
             <div style={styles.contactItem} className="about-contact-item">
-              <span style={styles.contactIcon}>📸</span>
+              <span style={styles.contactIcon}></span>
               <span style={styles.contactLabel}>Instagram:</span>
               <a
                 href="https://www.instagram.com/netanel_madarmusice?igsh=MXU4bW8xMGYwMzZ4Zg=="
@@ -169,12 +160,12 @@ function About() {
               </a>
             </div>
             <div style={styles.contactItem} className="about-contact-item">
-              <span style={styles.contactIcon}>💼</span>
+              <span style={styles.contactIcon}></span>
               <span style={styles.contactLabel}>LinkedIn:</span>
               <span style={styles.contactValue}>Ginies Madar</span>
             </div>
             <div style={styles.contactItem} className="about-contact-item">
-              <span style={styles.contactIcon}>🎥</span>
+              <span style={styles.contactIcon}></span>
               <span style={styles.contactLabel}>YouTube:</span>
               <a
                 href="https://youtube.com/channel/UC2g2s3T5tKN7bCMjockxW0Q?si=irstVhesNG_AncFn"
@@ -186,7 +177,7 @@ function About() {
               </a>
             </div>
             <div style={styles.contactItem} className="about-contact-item">
-              <span style={styles.contactIcon}>💬</span>
+              <span style={styles.contactIcon}></span>
               <span style={styles.contactLabel}>WhatsApp:</span>
               <span style={styles.contactValue}>
                 +972 53-537-8985
@@ -194,9 +185,6 @@ function About() {
             </div>
           </div>
         </section>
-
-
-
       </div>
     </div>
   );
@@ -207,11 +195,6 @@ export default About;
 // 🎨 STYLES
 const styles = {
   page: {
-    minHeight: "100vh",
-    background: "linear-gradient(180deg, #1f1410, #2a1915)",
-    color: "#f5e6d3",
-    paddingTop: "calc(var(--nav-height, 70px) + 20px)",
-    paddingBottom: "60px",
   },
   container: {
     maxWidth: "1000px",
@@ -219,103 +202,39 @@ const styles = {
     padding: "0 20px",
   },
   heroSection: {
-    display: "flex",
-    gap: "30px",
-    alignItems: "center",
-    marginBottom: "50px",
-    padding: "30px",
-    background: "rgba(45, 24, 16, 0.6)",
-    borderRadius: "20px",
-    border: "2px solid rgba(255, 140, 66, 0.3)",
-    boxShadow: "0 10px 40px rgba(29, 15, 10, 0.8)",
-    flexWrap: "wrap",
   },
   chefImageWrapper: {
-    flex: "0 0 280px",
-    minWidth: "280px",
   },
   chefImage: {
-    width: "100%",
-    height: "auto",
-    borderRadius: "16px",
-    boxShadow: "0 8px 24px rgba(255, 140, 66, 0.4)",
-    border: "3px solid rgba(255, 201, 71, 0.5)",
     transform: "rotateY(0deg)",
     transition: "transform 1.5s ease",
   },
   heroText: {
-    flex: "1",
-    minWidth: "300px",
   },
   heroDescription: {
-    fontSize: "16px",
-    lineHeight: "1.8",
-    color: "#f5e6d3",
-    marginBottom: "16px",
   },
   quoteBadge: {
-    display: "inline-block",
-    padding: "12px 24px",
-    background: "linear-gradient(135deg, rgba(255, 140, 66, 0.2), rgba(255, 201, 71, 0.2))",
-    border: "2px solid rgba(255, 201, 71, 0.5)",
-    borderRadius: "25px",
-    fontSize: "18px",
-    fontWeight: "600",
-    color: "#ffc947",
-    marginTop: "10px",
-    textDecoration: "none",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
   },
   header: {
     textAlign: "center",
     marginBottom: "40px",
   },
   mainTitle: {
-    fontSize: "clamp(32px, 5vw, 48px)",
-    fontWeight: "700",
-    color: "#ffc947",
-    textShadow: "0 2px 10px rgba(255, 201, 71, 0.3)",
-    marginBottom: "10px",
   },
   sectionTitleLarge: {
-    fontSize: "clamp(28px, 4vw, 36px)",
-    fontWeight: "700",
-    color: "#ffc947",
-    textShadow: "0 2px 10px rgba(255, 201, 71, 0.3)",
-    marginBottom: "10px",
   },
   section: {
-    background: "rgba(45, 24, 16, 0.5)",
-    padding: "24px",
-    borderRadius: "16px",
-    border: "1px solid rgba(255, 140, 66, 0.2)",
-    marginBottom: "24px",
   },
   sectionTitle: {
-    fontSize: "24px",
-    fontWeight: "600",
-    color: "#ff8c42",
-    marginBottom: "16px",
   },
   text: {
-    fontSize: "16px",
-    lineHeight: "1.8",
-    color: "#f5e6d3",
-    marginBottom: "12px",
   },
   textHighlight: {
-    fontSize: "16px",
-    lineHeight: "1.8",
-    color: "#ffc947",
-    fontWeight: "500",
-    marginBottom: "12px",
   },
   quote: {
     borderLeft: "4px solid #ff8c42",
     paddingLeft: "20px",
     fontStyle: "italic",
-    color: "#ffc947",
     fontSize: "16px",
     lineHeight: "1.8",
     marginTop: "16px",
@@ -327,11 +246,6 @@ const styles = {
     margin: "16px 0",
   },
   featureItem: {
-    padding: "8px 12px",
-    background: "rgba(255, 140, 66, 0.1)",
-    borderRadius: "8px",
-    fontSize: "15px",
-    borderLeft: "3px solid #ff8c42",
   },
   featureGrid: {
     display: "grid",
@@ -340,13 +254,6 @@ const styles = {
     marginTop: "16px",
   },
   feature: {
-    padding: "12px 16px",
-    background: "rgba(255, 140, 66, 0.15)",
-    border: "1px solid rgba(255, 140, 66, 0.3)",
-    borderRadius: "12px",
-    fontSize: "15px",
-    textAlign: "center",
-    transition: "all 0.3s ease",
   },
   contactGrid: {
     display: "flex",
@@ -355,13 +262,9 @@ const styles = {
     marginTop: "16px",
   },
   contactItem: {
-    padding: "12px 16px",
-    background: "rgba(255, 140, 66, 0.1)",
-    borderRadius: "12px",
     display: "flex",
     alignItems: "center",
     gap: "12px",
-    fontSize: "15px",
     boxSizing: "border-box",
     width: "100%",
     maxWidth: "100%",
@@ -369,14 +272,13 @@ const styles = {
   },
   contactIcon: {
     fontSize: "20px",
+    display: "none" // Hide empty icon span to align perfect left if needed, or keep for spacing
   },
   contactLabel: {
     fontWeight: "600",
-    color: "#ff8c42",
     minWidth: "80px",
   },
   contactValue: {
-    color: "#f5e6d3",
     textDecoration: "none",
     transition: "color 0.3s ease",
     wordWrap: "break-word",

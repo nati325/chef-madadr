@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAdminStats } from "../apirecipe/adminApi";
 import AdminCoursesManager from "./AdminCoursesManager";
+import AdminAppointments from "./AdminAppointments";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
@@ -74,7 +75,16 @@ const AdminDashboard = () => {
         >
           Manage Courses
         </button>
+        <button
+          className={activeTab === "appointments" ? "active" : ""}
+          onClick={() => setActiveTab("appointments")}
+        >
+          Scheduled Appointments
+        </button>
       </div>
+      {activeTab === "appointments" && (
+        <AdminAppointments />
+      )}
       {activeTab === "courses" && (
         <AdminCoursesManager />
       )}
