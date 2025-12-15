@@ -14,7 +14,7 @@ import recipeRoutes from "./routes/recipeRouter.js";
 import courseRoutes from "./routes/courseRouter.js";
 import adminRoutes from "./routes/adminRouter.js";
 import appointmentRoutes from "./routes/ApoitmentRouter.js";
-
+import aiRouter from "./routes/aiRouter.js";
 
 const app = express();
 
@@ -53,6 +53,7 @@ app.use("/api/recipes", recipeRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.use("/api/ai", aiRouter);
 
 
 // Root route - friendly message so visiting http://localhost:5000 doesn't return 404

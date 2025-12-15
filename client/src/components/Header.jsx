@@ -28,7 +28,7 @@ const Header = () => {
         <NavLink to="/community-recipes">community</NavLink>
         {isAdmin && <NavLink to="/admin">📊 Admin</NavLink>}
         <NavLink to="/res">Research</NavLink>
-
+        <NavLink to="/ai">Recipe Generator</NavLink>
         <NavLink to="/about">about</NavLink>
       </nav>
 

@@ -1,0 +1,10 @@
+POST http://localhost:5000/api/ai/generate HTTP/1.1
+content-type: application/json
+
+{
+        "prompt": "give me info about donald tramp"
+}
+
+###
+
+GET http://localhost:5000 HTTP/1.1

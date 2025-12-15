@@ -1,0 +1,72 @@
+/* עיצוב דף Recipe Generator בסגנון דומה לדף הבית */
+
+.recipe-generator {
+  max-width: 100vw;
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 80%;
+  max-width: 600px;
+  height: 120px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.generate-button {
+  width: 80%;
+  max-width: 200px;
+  padding: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.generate-button:hover {
+  background-color: #0056b3;
+}
+
+.recipe-output {
+  width: 80%;
+  max-width: 600px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.recipe-title {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.recipe-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
